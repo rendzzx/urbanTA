@@ -1,0 +1,99 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class c_email extends Core_Controller {
+	
+	public function __construct(){ 
+		parent::__construct();
+        header('Content-Transfer-Encoding: base64');
+		$this->auth_check();
+		$this->load->model('m_wsbangun');
+	}
+
+	public function index(){
+        $table = "sysEmailTemplate";
+        $data = $this->m_wsbangun->getDataadm($table);
+        $data = array(
+            'data'=> $data
+         );
+		$this->load_content_top_menu('EmailTemplate/index',$data);
+	}
+
+    public function editemail($id=0){
+
+        $data = array(
+            'id'=> $id
+         );
+
+        if ($id==1) {
+            $this->load_content_top_menu('EmailTemplate/edit',$data);
+        }
+        if ($id==2) {
+            $this->load_content_top_menu('EmailTemplate/edit2',$data);
+        }
+        if ($id==3) {
+            $this->load_content_top_menu('EmailTemplate/edit3',$data);
+        }
+
+    }
+
+    public function getByID($id){
+
+        $table = "sysEmailTemplate";
+        $where = array(
+            'Email_Id' => $id
+        );
+        $data = $this->m_wsbangun->getData_by_criteria_adm($table,$where);
+
+        echo json_encode($data);
+    }
+
+    public function opensend(){
+        $this->load->view('EmailTemplate/send');
+    }
+
+    public function send(){
+        $callback = array(
+            'Data' => null,
+            'Error' => true,
+            'Pesan' => '',
+            'Status'=> 200
+        );
+
+        $id         = $this->input->post('id',TRUE);
+        $subject    = $this->input->post('subject',TRUE);
+        $email      = $this->input->post('email',TRUE);
+        $cc         = $this->input->post('cc',TRUE);
+        $code       = $this->input->post('code',TRUE);
+        $footer     = $this->input->post('footer',TRUE);
+
+        // $email = "reza.julian@ifca.co.id,delia.elvina@ifca.co.id";
+        $subj = $subject;
+        $table = "sysEmailTemplate";
+        $data = array(
+            'code'      => $code,
+            'footer'    => $footer
+        );
+
+        if ($id==1) {
+            $body = $this->load->view('EmailTemplate/sendemail',$data, true);
+        }
+        if ($id==2) {
+            $body = $this->load->view('EmailTemplate/sendemail2',$data, true);
+        }
+        if ($id==3) {
+            $body = $this->load->view('EmailTemplate/sendemail3',$data, true);
+        }
+        // $this->load->view('EmailTemplate/sendemail',$data);
+        $send = $this->_sendgmail($email, $cc, $subj, $body);
+        if ($send=="OK") {
+            $callback['Error'] = false;
+            $callback['Pesan'] = "Email Sent";
+        }
+        else{
+            $callback['Error'] = true;
+            $callback['Pesan'] = "Email failed to send";
+        }
+
+        echo json_encode($callback, JSON_PRETTY_PRINT);
+    }
+}
