@@ -9,8 +9,7 @@ class Administrator extends Core_Controller
         $this->load->model('m_wsbangun');
     }
 
-    public function index()
-    {
+    public function index(){
         $entity = $this->session->userdata('Tsentity');
         $this->session->unset_userdata('urlmodule');
         $project = $this->session->userdata('Tsproject');
@@ -37,14 +36,15 @@ class Administrator extends Core_Controller
             $projectName = $b[1];
             $dbprofile = $b[2];
             // $product_cd = $b[3];
-            // var_dump($product_cd);
+            // var_dump($dbprofile);
             // exit();
             
             
             
             $Squery ="SELECT max(entity_cd) as entity_cd ,max(entity_name) as entity_name from mgr.v_cf_entity_project where project_no ='$project_no' ";            
+            // var_dump($Squery);
             $dd = $this->m_wsbangun->getData_by_query_cons($dbprofile,$Squery);
-            // var_dump($Squery);var_dump($dd);
+            // var_dump($dd);
             $entity = $dd[0]->entity_cd;
             $entity_name = $dd[0]->entity_name;
 
@@ -104,7 +104,6 @@ class Administrator extends Core_Controller
             );
         
         $this->load_content('dash/dash_admin', $content);
-
     }
     
     function time_elapsed_string($datetime, $full = false) {
@@ -135,7 +134,8 @@ class Administrator extends Core_Controller
         if (!$full) $string = array_slice($string, 0, 1);
         return $string ? implode(', ', $string) . ' ago' : 'just now';
     }
-   public function gotodash(){
+    
+    public function gotodash(){
         $param = $this->uri->segment(3);
         $moduleID = base64_decode($param);
         // $dtparam = explode('=&=', $paramDcd);

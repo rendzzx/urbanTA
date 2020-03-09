@@ -135,7 +135,7 @@ class C_Module extends Core_Controller
     }
     public function addnew($id=""){
 
-        $sql = "SELECT * FROM mgr.sysGroup where dashboard_url like '%adminweb%' order by group_descs asc";
+        $sql = "SELECT * FROM mgr.sysGroup order by group_descs asc";
         $group = $this->m_wsbangun->getData_by_query_cons('ifca3',$sql);
         $content = array('group' => $group);
         $this->load->view('sysmodule/add',$content);
