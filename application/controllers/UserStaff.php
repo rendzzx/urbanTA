@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 header('Access-Control-Allow-Origin: *');
-class UserStaff extends Core_Controller
+class userStaff extends Core_Controller
 {
 
     function __construct()

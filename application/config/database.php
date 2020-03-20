@@ -4,12 +4,11 @@
 $active_group = 'ifca3';
 $active_record = TRUE;
 
-$db['ifca']['hostname'] = 'RENDY-LP\SQL2016';
-// $db['ifca']['hostname'] = '35.198.219.220\SQL2016';
-$db['ifca']['username'] = 'rendzzx';
-// $db['ifca']['username'] = 'mgr';
+// $db['ifca']['hostname'] = 'RENDY-LP\SQL2016';
+$db['ifca']['hostname'] = '35.198.219.220\SQL2016';
+$db['ifca']['username'] = 'mgr';
 $db['ifca']['password'] = 'mgr';
-$db['ifca']['database'] = 'urban_live';
+$db['ifca']['database'] = 'urban_r_live';
 $db['ifca']['dbdriver'] = 'sqlsrv';
 $db['ifca']['dbprefix'] = '';
 $db['ifca']['pconnect'] = FALSE;
@@ -23,12 +22,11 @@ $db['ifca']['autoinit'] = TRUE;
 $db['ifca']['stricton'] = FALSE;
 
 //ADM
-$db['ifca3']['hostname'] = 'RENDY-LP\SQL2016';
-// $db['ifca3']['hostname'] = '35.198.219.220\SQL2016';
-$db['ifca3']['username'] = 'rendzzx';
-// $db['ifca3']['username'] = 'mgr';
+// $db['ifca3']['hostname'] = 'RENDY-LP\SQL2016';
+$db['ifca3']['hostname'] = '35.198.219.220\SQL2016';
+$db['ifca3']['username'] = 'mgr';
 $db['ifca3']['password'] = 'mgr';
-$db['ifca3']['database'] = 'urban_adm';
+$db['ifca3']['database'] = 'urban_r_adm';
 $db['ifca3']['dbdriver'] = 'sqlsrv';
 $db['ifca3']['dbprefix'] = '';
 $db['ifca3']['pconnect'] = FALSE;
@@ -41,12 +39,11 @@ $db['ifca3']['swap_pre'] = '';
 $db['ifca3']['autoinit'] = TRUE;
 $db['ifca3']['stricton'] = FALSE;
 
-$db['IFCAPB']['hostname'] = 'RENDY-LP\SQL2016';
-// $db['IFCAPB']['hostname'] = '35.198.219.220\SQL2016';
-$db['IFCAPB']['username'] = 'rendzzx';
-// $db['IFCAPB']['username'] = 'mgr';
+// $db['IFCAPB']['hostname'] = 'RENDY-LP\SQL2016';
+$db['IFCAPB']['hostname'] = '35.198.219.220\SQL2016';
+$db['IFCAPB']['username'] = 'mgr';
 $db['IFCAPB']['password'] = 'mgr';
-$db['IFCAPB']['database'] = 'urban_live'; 
+$db['IFCAPB']['database'] = 'urban_r_live'; 
 $db['IFCAPB']['dbdriver'] = 'sqlsrv';
 $db['IFCAPB']['dbprefix'] = '';
 $db['IFCAPB']['pconnect'] = FALSE;
@@ -59,12 +56,11 @@ $db['IFCAPB']['swap_pre'] = '';
 $db['IFCAPB']['autoinit'] = TRUE;
 $db['IFCAPB']['stricton'] = FALSE;
 
-$db['IFCAPB2']['hostname'] = 'RENDY-LP\SQL2016';
-// $db['IFCAPB2']['hostname'] = '35.198.219.220\SQL2016';
-$db['IFCAPB2']['username'] = 'rendzzx';
-// $db['IFCAPB2']['username'] = 'mgr';
+// $db['IFCAPB2']['hostname'] = 'RENDY-LP\SQL2016';
+$db['IFCAPB2']['hostname'] = '35.198.219.220\SQL2016';
+$db['IFCAPB2']['username'] = 'mgr';
 $db['IFCAPB2']['password'] = 'mgr';
-$db['IFCAPB2']['database'] = 'urban_live';
+$db['IFCAPB2']['database'] = 'urban_r_live';
 $db['IFCAPB2']['dbdriver'] = 'sqlsrv';
 $db['IFCAPB2']['dbprefix'] = '';
 $db['IFCAPB2']['pconnect'] = FALSE;
