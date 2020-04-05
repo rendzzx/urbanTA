@@ -197,9 +197,10 @@ public function convertToBytes($from){
 
     return $number * (1024 ** $exponent);
 }
+
+
 public function GenerateToken($EmailPassword,$Date,$UserID,$email){
     $token = $email.','.$EmailPassword.','.$UserID.','.$Date;
-// var_dump($token);
     return $this->EncryptText($token);
 
 }
@@ -216,26 +217,62 @@ public function EncryptText($inputText){
 }
 
 public function SaveUserSession($data){
-      return  $save = $this->M_wsbangun->insertData('sysUserSession', $data);
+      return  $save = $this->M_wsbangun->insertData('ifca3','sysUserSession', $data);
+}
+
+public function get_dropdown($data){
+    $dataDropdown = array_filter($data,function($a) {
+                        
+                        return $a->FieldType === 'DropDown';
+
+                    });
+    $dt = array();
+    foreach ($dataDropdown as $key ) {
+        $view = 'mgr.'.$key->DropdownSource;        
+        $sql = 'Select * from '.$view;
+
+        $DB2 = $this->load->database('ifca3', TRUE);
+       
+        $qq = $DB2->query($sql);     
+        $query = $qq->result(); 
+         $DB2->close();
+        $dt[$key->KeyName] = $query;
+
+    }
+
+    return $dt;
 
 }
 
 public function get_menu($group=''){
-        
-        $this->load->database();
-        $DB2 = $this->load->database('ifca3', TRUE);
+    $this->load->database();
+    $DB2 = $this->load->database('ifca3', TRUE);
 
-        $table = "select ROW_NUMBER() OVER (ORDER BY parent_seq, child_seq, mgr.v_sysMenuMobileGroup.MenuID ASC) AS [row_number], ";
-        $table .= " * from mgr.v_sysMenuMobileGroup";
-        $table .= " where GroupCd =? ";
-        $table .= " order by parent_seq, child_seq";
+    $table = "select ROW_NUMBER() OVER (ORDER BY parent_seq, child_seq, mgr.v_sysMenuMobileGroup.MenuID ASC) AS [row_number], ";
+    $table .= " * from mgr.v_sysMenuMobileGroup";
+    $table .= " where GroupCd =? ";
+    $table .= " order by parent_seq, child_seq";
 
-        $where = array($group);
-        $qq = $DB2->query($table, $where);     
-        $query = $qq->result();        
+    $where = array($group);
+    $qq = $DB2->query($table, $where);     
+    $query = $qq->result();        
 
-        return ($query);
-    }
+    return ($query);
+}
+
+public function get_field(){
+    $this->load->database();
+    $DB2 = $this->load->database('ifca3', TRUE);
+
+    $table = "select  ";
+    $table .= " * from mgr.sysField";
+    $table .= " order by FieldOrder";
+   
+    $qq = $DB2->query($table);     
+    $query = $qq->result();        
+     $DB2->close();
+    return ($query);
+}
 
  public function generateRandomString($length = 10) {
     // $length = 10;
