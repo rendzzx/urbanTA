@@ -26,7 +26,7 @@ class C_Assignmenu extends Core_Controller
         // $object = array('group_cd', 'group_descs');
         // $comboGroup = $this->m_wsbangun->getComboAdm($table, $object, $where);
         $sql = "SELECT distinct group_cd,group_descs from mgr.sysGroup(nolock)";        
-        $dtComplain = $this->m_wsbangun->getData_by_query_cons('ifca3',$sql);
+        $dtComplain = $this->m_wsbangun->getData_by_query_cons('IFCA',$sql);
 
         $comboGroup[] = '<option value=""></option>';
             if(!empty($dtComplain)) {
@@ -51,7 +51,7 @@ class C_Assignmenu extends Core_Controller
         $entity = $this->session->userdata('Tsentity');
         $project = $this->session->userdata('Tsproject');
         $group = $this->input->post('group', TRUE);
-        $DB2 = $this->load->database('ifca3', TRUE);
+        $DB2 = $this->load->database('IFCA', TRUE);
 
         $sSearch = $this->input->post("sSearch",true);
         if(empty($sSearch)){

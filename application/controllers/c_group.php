@@ -1,6 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class C_Group extends Core_Controller
-{
+class C_Group extends Core_Controller{
 	public function __construct()
     {
         parent::__construct();

@@ -1,33 +1,49 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class C_projects extends Core_Controller
-{
-	public function __construct()
-    {
+class C_projects extends Core_Controller{
+	public function __construct(){
         parent::__construct();
         $this->auth_check();
-        $this->load->model('m_wsbangun');
-
     }
 
-    public function index()
-    {
+    public function index(){
         $entity = $this->session->userdata('Tsentity');
         $name = $this->session->userdata('Tsuname');
         $admin = $this->session->userdata('Tsysadmin');
         $projectName = $this->session->userdata('Tsprojectname');
-    
-        // $sysmail = $this->m_wsbangun->getData_by_querypb_cons('ifca3',$sql);
-        // var_dump($sysmail);exit();
-        
         $content = array(
-            'project'=>$projectName,
-            // 'sysmail'=>$sysmail
+            'project'=>$projectName
         );
         
-    	$this->load_content_top_menu('projectmobile/index',$content);
+    	$this->load_content_top_menu('project/index',$content);
     }
-    public function form($typeform = '',$id='')
-    {
+
+    public function getTable(){
+        $callback = array(
+            'Data' => NULL,
+            'Error' => FALSE,
+            'Message' => NULL
+        );
+
+        $project = $this->session->userdata('Tsproject');        
+
+        $sSearch = $this->input->post("sSearch",true);
+        if(empty($sSearch)){
+            $sSearch='';
+        }
+
+        $entity = $this->session->userdata('Tsentity');
+        $this->load->library('Datatables');
+        $DB2 = $this->load->database('IFCA', TRUE);
+        $table = 'mgr.v_project';
+
+        $res = $this->M_wsbangun->getData_by_criteria('IFCA', $table, $where);
+        if ($res) {
+            $callback['Data'] = $res;
+        }
+        echo json_encode($callback);
+    }
+
+    public function form($typeform = '',$id=''){
         $sql = 'SELECT * from msdb.dbo.sysmail_profile';
         $sysmail = $this->m_wsbangun->getData_by_query_cons('ifca3',$sql);
         $sq2 = 'SELECT db_profile from mgr.pl_project from mgr.pl_project';
@@ -61,8 +77,8 @@ class C_projects extends Core_Controller
         );
         $this->load_content_top_menu('projectmobile/regist',$content);
     }
-    public function regist($id='')
-    {
+
+    public function regist($id=''){
         $sql = 'SELECT * from msdb.dbo.sysmail_profile';
         $sysmail = $this->m_wsbangun->getData_by_query_cons('ifca3',$sql);
         $sq2 = 'SELECT db_profile from mgr.pl_project from mgr.pl_project';
@@ -77,6 +93,7 @@ class C_projects extends Core_Controller
         );
         $this->load_content('projectmobile/regist',$content);
     }
+
     public function zoom_entity_from(){
         $cons = $this->input->post('cons',TRUE);
         $ent = $this->input->post('ent',TRUE);
@@ -270,15 +287,10 @@ class C_projects extends Core_Controller
     }
 
     public function addnew($id=""){
-        
         $sql = 'select * from msdb.dbo.sysmail_profile';
         $sysmail = $this->m_wsbangun->getData_by_querypb_cons('ifca3',$sql);
         $sq2 = 'select select db_profile from mgr.pl_project from mgr.pl_project';
         $project = $this->m_wsbangun->getData_by_querypb_cons('ifca3',$sql);
-
-
-        // var_dump($sysmail);exit();
-        
         $content = array(
             'sysmail'=>$sysmail,
             'id'=>$id,
@@ -326,9 +338,7 @@ class C_projects extends Core_Controller
         echo json_encode($data);
     }
 
-    public function getTable(){
-        
-        
+    public function getTable2(){
         $project = $this->session->userdata('Tsproject');        
 
         $sSearch = $this->input->post("sSearch",true);

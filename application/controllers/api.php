@@ -34,7 +34,7 @@ class api extends Core_Controller{
         $audit_date = date('d M Y H:i:s');
 
         $sql = "SELECT group_cd FROM mgr.sysuser where email='$em'";
-        $group = $this->M_api->getData_by_query('ifca3', $sql);
+        $group = $this->M_api->getData_by_query('IFCA', $sql);
 
         if ($group) {
             $group_cd = $group[0]->group_cd;
@@ -47,7 +47,7 @@ class api extends Core_Controller{
         }
 
         $sql2 = "SELECT count(*) as cnt FROM mgr.token_firebase where mac_address='$mac'";
-        $tokens = $this->M_api->getData_by_query('ifca3', $sql2);
+        $tokens = $this->M_api->getData_by_query('IFCA', $sql2);
         $cnttoken = $tokens[0]->cnt;
         if ($cnttoken > 0) {
             $data = array(
@@ -61,7 +61,7 @@ class api extends Core_Controller{
                 'mac_adderss' => $mac,
                 'devices' => 'android'
             );
-            $update = $this->M_api->updateData('ifca3', 'token_firebase', $data, $where);
+            $update = $this->M_api->updateData('IFCA', 'token_firebase', $data, $where);
         }
         else {
             $data = array(
@@ -72,7 +72,7 @@ class api extends Core_Controller{
                 'audit_date' => $audit_date,
                 'mac_address' => $mac
             );
-            $insert = $this->M_api->insertData('ifca3', 'token_firebase', $data);
+            $insert = $this->M_api->insertData('IFCA', 'token_firebase', $data);
         }
 
         if (!empty($em) && !empty($pass)) {
@@ -82,7 +82,7 @@ class api extends Core_Controller{
             $paswd = $pass; //$this->security->xss_clean(trim($this->input->post('password')));
             $paswd = strtoupper(md5($paswd));
 
-            $DB2 = $this->load->Database('ifca3', TRUE);
+            $DB2 = $this->load->Database('IFCA', TRUE);
             $sql = "select * from mgr.sysUser where isnull(sosmed,'')='' AND email =? AND status_activate = 'Y' ";
             $where = array($email_user);
             $qq = $DB2->query($sql, $where);
@@ -121,10 +121,10 @@ class api extends Core_Controller{
 
                 //cek token sebelum'a and delete
                 $param = array('Token' => $token);
-                $countToken = $this->M_api->getCount_by_criteria('ifca3', 'sysUserSession', $param);
+                $countToken = $this->M_api->getCount_by_criteria('IFCA', 'sysUserSession', $param);
                 // var_dump($countToken);
                 if ((int) $countToken > 0) {
-                    $this->M_api->deletedata('ifca3', 'sysUserSession', $param);
+                    $this->M_api->deletedata('IFCA', 'sysUserSession', $param);
                 }
 
                 //Generate Token
@@ -152,7 +152,7 @@ class api extends Core_Controller{
                     'devices' => 'android',
                     'login_date' => date("Y-m-d")
                 );
-                $this->M_api->insertData('ifca3', 'sysusersessionlog', $DatasysUserSession);
+                $this->M_api->insertData('IFCA', 'sysusersessionlog', $DatasysUserSession);
 
                 $dataField = $this->get_field();
                 $dataDropdown = $this->get_dropdown($dataField);
@@ -211,7 +211,7 @@ class api extends Core_Controller{
                 'IdUser' => $user
             );
 
-            $delete = $this->M_api->deletedata('ifca3', 'sysUserSession', $where);
+            $delete = $this->M_api->deletedata('IFCA', 'sysUserSession', $where);
             if ($delete == 'OK') {
 
                 $DatasysUserSession = array(
@@ -223,7 +223,7 @@ class api extends Core_Controller{
                     'login_date' => date("Y-m-d H:i:s")
                 );
 
-                $insertLog = $this->M_api->insertData('ifca3', 'sysusersessionlog', $DatasysUserSession);
+                $insertLog = $this->M_api->insertData('IFCA', 'sysusersessionlog', $DatasysUserSession);
 
                 $psn = 'Berhasil Logout';
             } else {
