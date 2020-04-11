@@ -1,10 +1,8 @@
 <!-- link -->
-    <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/vendors/css/tables/datatable/datatables.min.css')?>">
-    <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css')?>">
-    <script src="<?=base_url('app-assets/vendors/js/vendors.min.js')?>" type="text/javascript"></script>
-    <script src="<?=base_url('app-assets/vendors/js/tables/datatable/datatables.min.js')?>" type="text/javascript"></script>
-    <script src="<?=base_url('app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js')?>" type="text/javascript"></script>
-    <script src="<?=base_url('app-assets/vendors/js/extensions/sweetalert2.all.js')?>" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/dataTables/datatables.min.css')?>">
+    <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/dataTables/extensions/responsive.datatables.min.css')?>">
+    <script type="text/javascript" src="<?=base_url('app-assets/js/tables/datatables.min.js')?>"></script>
+    <script type="text/javascript" src="<?=base_url('app-assets/js/tables/dataTables.responsive.min.js')?>"></script>
 <!-- link -->
 
 <!-- content -->
@@ -12,40 +10,21 @@
         <div class="content-wrapper">
             <div class="content-wrapper-before" style="height: 150px !Important"></div>
             <div class="content-header row">
-                <div class="content-header-left col-md-4 col-12 mb-2">
-                    <br><br>
-                    <h3 class="content-header-title">Projects Entry</h3>
-                </div>
-                <div class="content-header-right col-md-8 col-12 mb-2">
-                    <br>
-                    <div class="breadcrumbs-top float-md-right">
-                        <div class="breadcrumb-wrapper mr-1">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a style="font-weight: bold">IFCA <?php echo $this->session->userdata('appsname'); ?></a>
-                                </li>
-                                <li class="breadcrumb-item active">
-                                    Projects
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
+                <br><br>
             </div>
             <div class="content-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
+                                <h3>Projects Entry</h3>
                                 <a class="heading-elements-toggle">
                                     <i class="la la-ellipsis-v font-medium-3"></i>
                                 </a>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
                                         <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                                        <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
                                         <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                                        <li><a data-action="close"><i class="ft-x"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -56,11 +35,10 @@
                                             <thead>            
                                                 <th class="sorting_asc">No.</th>
                                                 <th>Entity Code</th>
+                                                <th>Project No</th>
                                                 <th>Project Name</th>
-                                                <th>Location</th>
-                                                <th>Database Profile</th>
-                                                <th>Database Name</th>
                                                 <th>Status</th>
+                                                <th>Location</th>
                                                 <th>Priority No</th>
                                             </thead>
                                             <tbody>
@@ -98,23 +76,19 @@
     <script type="text/javascript">
         var tblnewsfeed; 
         var tblnewsfeed = $('#tblnewsfeed').DataTable({
+            "responsive":true,
             "ajax" : {
                 "url" : "<?php echo base_url('C_projects/getTable');?>",
+                "dataSrc": "",
                 "type": "POST"
             },
             "columns": [
-                {data: "row_number", width:'1px', searchable:false,
-                    render: function (data, type, row) {
-                        var row_number = row.row_number
-                        return row_number + '.'
-                    }
-                },
+                {data:'entity_cd'},
                 {data:"entity_cd" },
+                {data:"project_no"},
                 {data:"project_descs"},
-                {data:"location"},
-                {data:"db_profile"},
-                {data:"db_name"},
                 {data:"project_status_descs"},
+                {data:"location"},
                 {data:"seq_no"}
             ],
             "language": {
@@ -125,9 +99,15 @@
         });
 
         $("div.newsfeed").html(
-            '<button id="addnewsfeed" class="btn btn-primary pull-up" style="margin-top: 5px">Add</button>&nbsp;'+
-            '<button id="editnewsfeed" class="btn btn-info pull-up" style="margin-top: 5px">Edit</button>&nbsp;'
+            '<button id="addnewsfeed" class="btn btn-primary pull-up disabled" style="margin-top: 5px" disabled>Add</button>&nbsp;'+
+            '<button id="editnewsfeed" class="btn btn-info pull-up disabled" style="margin-top: 5px" disabled>Edit</button>&nbsp;'
         );
+
+        tblnewsfeed.on( 'order.dt search.dt', function () {
+            tblnewsfeed.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                cell.innerHTML = i+1;
+            } );
+        } ).draw();
 
         tblnewsfeed.on('click', 'tr', function() {
             if ($(this).hasClass('selected')) {

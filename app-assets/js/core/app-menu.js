@@ -4,9 +4,9 @@
   initialization and manipulations
   ----------------------------------------------------------------------------------------
   Item Name: Chameleon Admin - Modern Bootstrap 4 WebApp & Dashboard HTML Template + UI Kit
-  Version: 1.0
+  Version: 1.2
   Author: ThemeSelection
-  
+  Author URL: https://themeselection.com/
 ==========================================================================================*/
 (function(window, document, $) {
   'use strict';
@@ -31,9 +31,8 @@
 
       init: function() {
         var scroll_theme = ($('.main-menu').hasClass('menu-dark')) ? 'light' : 'dark';
-        this.obj = $(".main-menu-content").perfectScrollbar({
-          suppressScrollX: true,
-          theme: scroll_theme
+        this.obj = new PerfectScrollbar(".main-menu-content", {
+          wheelPropagation: false,
         });
       },
 
@@ -56,7 +55,7 @@
                 $('.main-menu').data('scroll-to-active', 'false');
               },300);
           }
-          $(".main-menu-content").perfectScrollbar('update');
+          this.obj.update();
         }
       },
 
@@ -66,7 +65,7 @@
 
       disable: function() {
         if (this.obj) {
-          $('.main-menu-content').perfectScrollbar('destroy');
+          this.obj.destroy();
         }
       },
 
@@ -443,24 +442,10 @@
           }
           if( ($body.data('menu') == 'vertical-menu' || $body.data('menu') == 'vertical-menu-modern') && $('.main-menu').hasClass('menu-fixed') ){
             $('.main-menu-content').css('height', $(window).height() - $('.header-navbar').height());
-            // this.manualScroller.update();
-          }
-          if( $body.data('menu') == 'vertical-menu-modern'){
-            if($('.main-menu').hasClass('menu-fixed'))
+            if(!$('.main-menu-content').hasClass('ps')){
               this.manualScroller.enable();
+            }
           }
-          /*if( $body.data('menu') == 'vertical-menu-modern' && defMenu === 'collapsed' ){
-            var $listItem = $('.main-menu li.open'),
-            $subList = $listItem.children('ul');
-            $listItem.addClass('menu-collapsed-open');
-
-            $subList.show().slideUp(200, function() {
-                $(this).css('display', '');
-            });
-
-            $listItem.removeClass('open');
-            // $.app.menu.changeLogo();
-          }*/
         });
       }
     },
@@ -673,22 +658,22 @@
               menuTitle.addClass("menu-title");
             }
           }
-          
+
           var menu_header_height = ($('.navbar-header').length) ? $('.navbar-header').height() : 0;
           // fromTop = menu_header_height + $this.position().top + parseInt($this.css( "border-top" ),10);
           var fromTop;
           if($this.css( "border-top" )){
-            fromTop = $this.offset().top + parseInt($this.css( "border-top" ), 10);
+            fromTop = menu_header_height + $this.position().top + parseInt($this.css( "border-top" ), 10);
           }
           else{
-            fromTop = $this.offset().top;
+            fromTop = menu_header_height + $this.position().top;
           }
 
           menuTitle.appendTo('.main-menu-content').css({
             position:'fixed',
             top : fromTop,
           });
-          
+
 
           // Content
           if($this.hasClass('has-sub') && $this.hasClass('nav-item')) {
@@ -865,7 +850,7 @@
       ul = $submenu.clone(true);
 
       menuHeaderHeight = $('.navbar-header').height();
-      menutop          = $menuItem.offset().top - menuHeaderHeight;
+      menutop          = $menuItem.position().top;
       winHeight        = $window.height() - $('.header-navbar').height();
       borderWidth      = 0;
       subMenuHeight    = $submenu.height();
@@ -876,18 +861,16 @@
 
       popOutMenuHeight = winHeight - menutop - $menuItem.height() - 30;
       scroll_theme     = ($('.main-menu').hasClass('menu-dark')) ? 'light' : 'dark';
-      
+
       topPos = menuHeaderHeight + menutop + $menuItem.height() + borderWidth;
-      
+
       ul.addClass('menu-popout').appendTo('.main-menu-content').css({
         'top' : topPos,
         'position' : 'fixed',
         'max-height': popOutMenuHeight,
       });
 
-      $('.main-menu-content > ul.menu-content').perfectScrollbar({
-        theme:scroll_theme,
-      });
+      var menu_content = new PerfectScrollbar('.main-menu-content > ul.menu-content');
     },
 
     collapse: function($listItem, callback) {

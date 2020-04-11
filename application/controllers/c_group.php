@@ -1,37 +1,26 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class C_Group extends Core_Controller{
-	public function __construct()
-    {
+class C_group extends Core_Controller{
+	public function __construct(){
         parent::__construct();
         $this->auth_check();
         $this->load->model('m_wsbangun');
-
     }
 
-    public function index()
-    {
+    public function index(){
         $entity = $this->session->userdata('Tsentity');
         $name = $this->session->userdata('Tsuname');
         $admin = $this->session->userdata('Tsysadmin');
-
     	$this->load_content_top_menu('group/index');
     }
-
-
       
     public function addnew($id=""){
-        
- 
         $this->load->view('group/add');
-
     }
+
     public function getByID($GroupID=''){
-  
         $where=array('GroupID'=>$GroupID);
         $data = $this->m_wsbangun->getData_by_criteria_adm('sysgroup',$where);
-
         echo json_encode($data);
-
     }
 
     public function delete(){
@@ -45,9 +34,28 @@ class C_Group extends Core_Controller{
         $msg1=array("Pesan"=>$msg);
         echo json_encode($msg1);
     }
+
+    public function getTable(){
+        $project = $this->session->userdata('Tsproject');        
+
+        $sSearch = $this->input->post("sSearch",true);
+        if(empty($sSearch)){
+            $sSearch='';
+        }
+
+        $entity = $this->session->userdata('Tsentity');
+        $this->load->library('Datatables');
+        $DB2 = $this->load->database('IFCA', TRUE);
+        $table = 'sysgroup';
+
+        $res = $this->M_wsbangun->getData_by_criteria('IFCA', $table);
+        if ($res) {
+            $callback = $res;
+        }
+        echo json_encode($callback);
+    }
     
-    public function getTable()
-    {
+    public function getTablea(){
         $project = $this->session->userdata('Tsproject');        
 
         $sSearch = $this->input->post("sSearch",true);
@@ -132,7 +140,6 @@ class C_Group extends Core_Controller{
     }
  
     public function save(){
-        
             $msg="";
             if ($_POST) 
             {

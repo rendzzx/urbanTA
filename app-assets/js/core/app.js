@@ -3,9 +3,9 @@
   Description: Template related app JS.
   ----------------------------------------------------------------------------------------
   Item Name: Chameleon Admin - Modern Bootstrap 4 WebApp & Dashboard HTML Template + UI Kit
-  Version: 1.0
+  Version: 1.2
   Author: ThemeSelection
-  
+  Author URL: https://themeselection.com/
 ==========================================================================================*/
 
 (function(window, document, $) {
@@ -106,7 +106,7 @@
         $('a[data-action="collapse"]').on('click', function(e) {
             e.preventDefault();
             $(this).closest('.card').children('.card-content').collapse('toggle');
-            $(this).closest('.card').find('[data-action="collapse"] i').toggleClass('ft-minus ft-plus');
+            $(this).closest('.card').find('[data-action="collapse"] i').toggleClass('ft-plus ft-minus');
 
         });
 
@@ -118,11 +118,11 @@
         });
 
         //  Notifications & messages scrollable
-        if ($('.scrollable-container').length > 0) {
-            $('.scrollable-container').perfectScrollbar({
-                theme: "dark"
+        $('.scrollable-container').each(function(){
+            var scrollable_container = new PerfectScrollbar($(this)[0],{
+                wheelPropagation: false,
             });
-        }
+        });
 
         // Reload Card
         $('a[data-action="reload"]').on('click', function() {
@@ -198,19 +198,6 @@
         var chartjsDiv = $('.chartjs'),
             canvasHeight = chartjsDiv.children('canvas').attr('height');
         chartjsDiv.css('height', canvasHeight);
-
-        if ($body.hasClass('boxed-layout')) {
-            if ($body.hasClass('vertical-overlay-menu') || $body.hasClass('vertical-compact-menu')) {
-                var menuWidth = $('.main-menu').width();
-                var contentPosition = $('.app-content').position().left;
-                var menuPositionAdjust = contentPosition - menuWidth;
-                if ($body.hasClass('menu-flipped')) {
-                    $('.main-menu').css('right', menuPositionAdjust + 'px');
-                } else {
-                    $('.main-menu').css('left', menuPositionAdjust + 'px');
-                }
-            }
-        }
 
         $('.nav-link-search').on('click', function() {
             var $this = $(this),

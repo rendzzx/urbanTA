@@ -9,12 +9,7 @@
             <li></li>
         </ul>
     </div>
-</footer>
-    <script src="<?=base_url('app-assets/vendors/js/vendors.min.js')?>" type="text/javascript"></script>
-    <script type="text/javascript" src="<?=base_url('app-assets/vendors/js/ui/jquery.sticky.js')?>"></script>
-    <script src="<?=base_url('app-assets/js/core/app-menu.js')?>" type="text/javascript"></script>
-    <script src="<?=base_url('app-assets/js/core/app.js')?>" type="text/javascript"></script>
-    
+</footer>    
     <script type="text/javascript">
         $(document).ready(function(){
             setInterval(function(){

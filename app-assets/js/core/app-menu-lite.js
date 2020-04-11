@@ -4,9 +4,9 @@
   initialization and manipulations
   ----------------------------------------------------------------------------------------
   Item Name: Chameleon Admin - Modern Bootstrap 4 WebApp & Dashboard HTML Template + UI Kit
-  Version: 1.0
+  Version: 1.2
   Author: ThemeSelection
-  
+  Author URL: https://themeselection.com/
 ==========================================================================================*/
 (function(window, document, $) {
   'use strict';
