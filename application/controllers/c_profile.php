@@ -1,36 +1,16 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
-* 
-*/
-class C_profile extends Core_Controller
-{
-	
-	public function __construct()
-    {
+class C_profile extends Core_Controller{
+	public function __construct(){
         parent::__construct();
         $this->auth_check();
-        $this->load->model('m_wsbangun');
+    }
 
-        date_default_timezone_set('Asia/Jakarta');
-    }    
-    public function profile()
-    {
+    public function profile(){
         $entity = $this->session->userdata('Tsentity');
         $project = $this->session->userdata('Tsproject');
         $projectName = $this->session->userdata('Tsprojectname');
         $name = $this->session->userdata('Tsuname');
         $group = $this->session->userdata('Tsusergroup');
-        // var_dump($group);
-        // $sql = "select * from mgr.cf_agent_dt where agent_cd='$name'";
-        // $data = $this->m_wsbangun->getData_by_query($sql);
-
-        // var_dump($name);
-        // var_dump($data);
-        // $pic = $data[0]->pic_name;
-        
-        // $content = array('data' => $data
-        //     );
-        // var_dump($group);exit();
         if($group=='AGENT')
         {
             $this->load->view('agent/profile');
@@ -43,84 +23,11 @@ class C_profile extends Core_Controller
         {
             $this->load->view('agent/else');
         }
-        // switch ($group) {
-        //     case 'AGENT':
-        //         $this->load->view('agent/profile');
-        //         break;
-        //     case 'PRINCIPAL':
-        //         $this->load->view('agent/principal');
-        //         break;
-        //     default:
-        //         $this->load->view('agent/profile');
-        //         break;
-        // }
-        
-        // $this->load->view('agent/profile');
     }
 
-    public function profile_edit()
-    {
+    public function profile_edit(){
         $this->load->view('agent/profile');
     }
-    public function UpdatePasswordApi(){
-        $msg="";
-        $psn ='';
-        if ($_POST) 
-           {
-                 $Chapcta = strtoupper($this->input->post('userCaptcha', true));
-                 $email = $this->input->post('email', true);
-                 $password = strtoupper(md5(trim($this->input->post('txtpassword')))); 
-
-                 $cc = strtoupper($this->session->userdata('captchaWord'));
-
-                 if($Chapcta!=$cc){
-                        $msg="Captcha is invalid";
-                        $psn="FAIL";
-                 }else{
-                        $em = strtoupper(md5($email));                   
-                        $EmailPassword = md5($em.'P@ssw0rd'.$password);
-                        $sql_cloud="select Link from syslocation where Descs='Login' ";
-                        $cons = $this->session->userdata('Tscons');
-                        $dt_cloud = $this->m_wsbangun->getData_by_query_cloud_cons($cons,$sql_cloud);
-                        $url =$dt_cloud[0]->Link.'/change/UpdatePasswordApi';
-                        // var_dump($url);exit();
-                        $dataJson = "COM=".base64_encode($em)."&COM1=".base64_encode($em);
-                                // var_dump($dataJson);exit();
-                             
-                                        
-                                        // var_dump($url);
-                                        $ch = curl_init();
-                                        curl_setopt($ch, CURLOPT_URL, $url);
-                                        // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json','Content-Type: application/json'));
-                                        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
-                                        curl_setopt($ch, CURLOPT_POST, 1);
-                                        curl_setopt($ch, CURLOPT_POSTFIELDS,$dataJson);
-                                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);                         
-                                        $response  = curl_exec($ch);
-                                        curl_close($ch);
-// var_dump($response);exit();
-
-                                        if($response["Status"]!="OK"){
-                                         $msg=$response["Pesan"];
-                                         $psn="FAIL";
-                                        }else{
-                                            $msg=$response["Pesan"];
-                                            $psn="OK";
-                                        }
-
-                            }
-
-                 
-           }else{
-
-            $msg="Data Not Valid!";
-            $psn ='Fail';
-           }
-
-           $response=array("Pesan"=>$msg,
-                            "Status"=>$psn);
-           echo json_encode($response);
-    }  
 
     public function agentProfile(){
         $this->load->database();
@@ -129,7 +36,6 @@ class C_profile extends Core_Controller
         $projectName = $this->session->userdata('Tsprojectname');
         $name = $this->session->userdata('Tsuname');        
         $group = $this->session->userdata('Tsusergroup');
-        // var_dump($group);
         if($group=='AGENT')
         {
             $this->load_content_top_menu('agent/profileAgent');
@@ -142,8 +48,6 @@ class C_profile extends Core_Controller
         {
             $this->load_content_top_menu('agent/profileElse');
         }
-
-        // $this->load_content_top_menu('agent/profileAgent');
     }
 
     public function change(){
@@ -159,41 +63,9 @@ class C_profile extends Core_Controller
         $ContentAllData = array('email'=>$Tsemail,
                                 'cp' => $cp);
         $this->load_content_top_menu('login/changepass',$ContentAllData);
-       
+    }
 
-    }
-    private function setCaptcha()
-    {
-        
-        $rand_number = substr(md5(uniqid(rand(), true)), 0, 4);
-        $va = array('img_path'=>'./img/static/',
-            'img_url'=>base_url().'img/static/',
-            'font_size'=>20,
-            
-            'font_path'=>FCPATH. 'dist/captcha4.ttf',
-            'word'=>$rand_number,
-            'img_width'=>140,
-            'img_height'=>34,
-            'expiration'=>3600
-            );
-        $cp = create_captcha($va);
-        $this->session->set_userdata('captchaWord', $cp['word']);
-        return $cp;
-    }
     public function getByName($Name){
-        
-        
-        // $sql = " select description, phone_cellular,MenuPosition from mgr.security_users with(NOLOCK) where name = '$Name'";
-        // $sql =" SELECT DESCRIPTION, phone_cellular,MenuPosition FROM mgr.security_userdetails with(NOLOCK) WHERE NAME = '$Name'";
-       
-        // $sql =" SELECT name, Handphone,email, pict FROM mgr.sysuser with(NOLOCK) WHERE name = '$Name'";
-        // $cons = $this->session->userdata('Tscons');
-        // $data = $this->m_wsbangun->getData_by_query_cons($cons,$sql);
-        // // var_dump($cons);exit();
-
-        // echo json_encode($data);
-
-
         $cons   = $this->session->userdata('Tscons');
         $table  = 'sysuser';
 
@@ -203,20 +75,8 @@ class C_profile extends Core_Controller
 
         echo json_encode($data);
     }
+
     public function fotopict($Name){
-        
-        
-        // $sql = " select description, phone_cellular,MenuPosition from mgr.security_users with(NOLOCK) where name = '$Name'";
-        // $sql =" SELECT DESCRIPTION, phone_cellular,MenuPosition FROM mgr.security_userdetails with(NOLOCK) WHERE NAME = '$Name'";
-       
-        // $sql =" SELECT name, Handphone,email, pict FROM mgr.sysuser with(NOLOCK) WHERE name = '$Name'";
-        // $cons = $this->session->userdata('Tscons');
-        // $data = $this->m_wsbangun->getData_by_query_cons($cons,$sql);
-        // // var_dump($cons);exit();
-
-        // echo json_encode($data);
-
-
         $cons   = $this->session->userdata('Tscons');
         $table  = 'sysuser';
 
@@ -226,45 +86,50 @@ class C_profile extends Core_Controller
 
         echo json_encode($data);
     }
+
     public function getByID($Name){
-        $sql = "select * from mgr.cf_agent_dt where agent_cd='$Name'";
+        $sql = "select * from cf_agent_dt where agent_cd='$Name'";
         $cons = $this->session->userdata('Tscons');
         $data = $this->m_wsbangun->getData_by_query_cons($cons,$sql);
 
         echo json_encode($data);
     }
+
     public function getByIDGroup($name = null){
         if(!empty($name)){
-            $q = "select * from mgr.cf_agent_dt a inner join mgr.cf_agent_hd b ON a.group_cd=b.group_cd WHERE a.agent_cd='$name'";
+            $q = "select * from cf_agent_dt a inner join cf_agent_hd b ON a.group_cd=b.group_cd WHERE a.agent_cd='$name'";
             $cons = $this->session->userdata('Tscons');
             $d = $this->m_wsbangun->getData_by_query_cons($cons,$q);
 
             echo json_encode($d);
         }
     }
+
     public function getByIDGroup2($name = null){
         if(!empty($name)){
-            $q2 = "select a.email_add as email_add from mgr.cf_agent_dt a inner join mgr.cf_agent_hd b ON a.group_cd=b.group_cd WHERE a.agent_cd='$name'";
+            $q2 = "select a.email_add as email_add from cf_agent_dt a inner join cf_agent_hd b ON a.group_cd=b.group_cd WHERE a.agent_cd='$name'";
             $cons = $this->session->userdata('Tscons');
             $d2 = $this->m_wsbangun->getData_by_query_cons($cons,$q2);
 
             echo json_encode($d2);
         }
     }
+
     public function getByIDDD($name = null){
         if(!empty($name)){
             $this->load->database();
              $DB2 = $this->load->database('ifca', TRUE);
-             $sql = 'select a.email as email_add,a.name from mgr.security_userdetails a with(NOLOCK) where a.name =?';
+             $sql = 'select a.email as email_add,a.name from security_userdetails a with(NOLOCK) where a.name =?';
              $where = array($name);
              $qq = $DB2->query($sql, $where);     
              $datas = $qq->result();
-            // $q2 = "select * from mgr.security_userdetails a with(NOLOCK) where a.name='$name'";
+            // $q2 = "select * from security_userdetails a with(NOLOCK) where a.name='$name'";
             // $d2 = $this->m_wsbangun->getData_by_query($q2);
 
             echo json_encode($datas);
         }
     }
+
     public function zoom_office(){
         $id = $this->input->post('Id', TRUE);
         $id = trim($id);
@@ -276,6 +141,7 @@ class C_profile extends Core_Controller
         $data = $this->m_wsbangun->getCombo_cons($cons,$table,$obj,null,$id);
         echo $data;
     }
+
     public function choose_Lead(){
         $id = $this->input->post('Id', TRUE);
         $table = 'cf_lead_agent (nolock)';
@@ -287,6 +153,7 @@ class C_profile extends Core_Controller
         $data = $this->m_wsbangun->getCombo_cons($cons,$table,$obj,$where,$id,$order);
         echo $data;
     }
+
     public function choose_Brand(){
         $id = $this->input->post('Id', TRUE);
         $table = 'cf_brand_agent (nolock)';
@@ -297,9 +164,10 @@ class C_profile extends Core_Controller
         $data = $this->m_wsbangun->getCombo_cons($cons,$table,$obj,$where,$id,$order);
         echo $data;
     }
+
     public function chooseLead(){
         $id =$this->input->post('q', TRUE);
-        $sql = "select * from mgr.cf_lead_agent where lead_name like '%$id%' order by rowid asc";
+        $sql = "select * from cf_lead_agent where lead_name like '%$id%' order by rowid asc";
         $cons = $this->session->userdata('Tscons');
         $city = $this->m_wsbangun->getData_by_query_cons($cons,$sql);
         if(!empty($city)){
@@ -309,9 +177,10 @@ class C_profile extends Core_Controller
             echo json_encode($row);
         }
     }
+
     public function chooseBrand(){
         $id =$this->input->post('q', TRUE);
-        $sql = "select * from mgr.cf_brand_agent where brand_name like '%$id%' order by rowid asc";
+        $sql = "select * from cf_brand_agent where brand_name like '%$id%' order by rowid asc";
         $cons = $this->session->userdata('Tscons');
         $city = $this->m_wsbangun->getData_by_query_cons($cons,$sql);
         if(!empty($city)){
@@ -321,6 +190,7 @@ class C_profile extends Core_Controller
             echo json_encode($row);
         }
     }
+
     public function updateGroup(){
         $msg ='';
         $status ='';
@@ -401,6 +271,7 @@ class C_profile extends Core_Controller
         $t = array("Pesan"=>$msg, "status"=>$status);
         echo json_encode($t);
     }
+
     public function updateElse(){
         $msg ='';
         $status ='';
@@ -557,7 +428,7 @@ class C_profile extends Core_Controller
 
             $this->load->database();
             $DB2 = $this->load->database('ifca3', TRUE);
-            $sql = 'select * from mgr.sysUser where email=?';
+            $sql = 'select * from sysUser where email=?';
             $where =array($em);
             $qq = $DB2->query($sql,$where);
             $datas = $qq->result();
@@ -656,8 +527,6 @@ class C_profile extends Core_Controller
                         "status"=>$status);
             
         echo json_encode($msg1);
-         
-
     }
 
 }

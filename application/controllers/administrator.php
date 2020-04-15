@@ -1,5 +1,4 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-
 class Administrator extends Core_Controller{
     public function __construct(){
         parent::__construct();
@@ -7,12 +6,12 @@ class Administrator extends Core_Controller{
     }
 
     public function index(){
-        $entity = $this->session->userdata('Tsentity');
         $this->session->unset_userdata('urlmodule');
+
+        $entity = $this->session->userdata('Tsentity');
         $project = $this->session->userdata('Tsproject');
         $seqno = $this->input->post('seqno', true);
-        $pdfname='';
-        $status='';
+        
         $param = $this->uri->segment(3);
         $paramDcd = base64_decode($param);
 
@@ -21,16 +20,15 @@ class Administrator extends Core_Controller{
             $projectName = $this->session->userdata('Tsprojectname') ;
         }
         else {
-            $email = $this->session->userdata('Tsemail');
-            $b = explode("-%-", $paramDcd);
-            $project_no = $b[0];
-            $projectName = $b[1];
-            $Squery ="SELECT max(entity_cd) as entity_cd ,max(entity_name) as entity_name from mgr.v_cf_entity_project where project_no ='$project_no' ";            
-            // var_dump($Squery);
+            $b              = explode("-%-", $paramDcd);
+            $project_no     = $b[0];
+            $projectName    = $b[1];
+
+            $Squery ="SELECT max(entity_cd) as entity_cd ,max(entity_name) as entity_name from v_entity_project where project_no ='$project_no' ";
             $dd = $this->M_wsbangun->getData_by_query('IFCA', $Squery);
-            // var_dump($dd);
-            $entity = $dd[0]->entity_cd;
-            $entity_name = $dd[0]->entity_name;
+            
+            $entity         = $dd[0]->entity_cd;
+            $entity_name    = $dd[0]->entity_name;
        
             $position ='T';
  
@@ -48,14 +46,16 @@ class Administrator extends Core_Controller{
         $project = $this->session->userdata('Tsproject');
         $group_cd = $this->session->userdata('Tsusergroup');
 
-        $where=array('group_cd'=>$group_cd);
-
-        $sql = "SELECT * from mgr.v_sysModuleUser where group_cd = '$group_cd' order by orderseq asc";
+        $where = array(
+            'group_cd' => $group_cd
+        );
+        $sql = "SELECT * from v_sysModuleUser where group_cd = '$group_cd' order by orderseq asc";
         $dtmodule = $this->M_wsbangun->getData_by_query('IFCA', $sql);
+
         $module = '';
         if(!empty($dtmodule)){
             foreach ($dtmodule as $key) {
-                $module.='<div class="col-xl-4 col-lg-6 col-12" onclick="gotodash(\''.$key->moduleID.'\')">';
+                $module.='<div style="cursor: pointer;" class="col-xl-4 col-lg-6 col-12" onclick="gotodash(\''.$key->moduleID.'\')">';
                 $module.='    <div class="card btn btn-bg-gradient-x-'.$key->ButtonClass.' box-shadow-3">';
                 $module.='        <div class="card-content">';
                 $module.='            <div class="card-body">';
@@ -81,47 +81,22 @@ class Administrator extends Core_Controller{
             'module' => $module
         );
         
-        $this->load_content('dash/dash_admin', $content);
+        $this->load_content('dashboard/index', $content);
     }
-    
-    function time_elapsed_string($datetime, $full = false) {
-        $now = new DateTime;
-        $ago = new DateTime($datetime);
-        $diff = $now->diff($ago);
 
-        $diff->w = floor($diff->d / 7);
-        $diff->d -= $diff->w * 7;
-
-        $string = array(
-            'y' => 'year',
-            'm' => 'month',
-            'w' => 'week',
-            'd' => 'day',
-            'h' => 'hour',
-            'i' => 'minute',
-            's' => 'second',
-        );
-        foreach ($string as $k => &$v) {
-            if ($diff->$k) {
-                $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
-            } else {
-                unset($string[$k]);
-            }
-        }
-
-        if (!$full) $string = array_slice($string, 0, 1);
-        return $string ? implode(', ', $string) . ' ago' : 'just now';
-    }
-    
     public function gotodash(){
         $param = $this->uri->segment(3);
         $moduleID = base64_decode($param);
-        $where=array('rowID'=>$moduleID);
+
+        $where = array(
+            'rowID' => $moduleID
+        );
         $dtmodule = $this->M_wsbangun->getData_by_criteria('IFCA','sysModule',$where);
+
         if(!empty($dtmodule)){
-            $choosengroup = $dtmodule[0]->module_group_cd;
-            $url = $dtmodule[0]->dashboard_url;
-            $appsname = $dtmodule[0]->module_cd;
+            $choosengroup   = $dtmodule[0]->module_group_cd;
+            $url            = $dtmodule[0]->dashboard_url;
+            $appsname       = $dtmodule[0]->module_cd;
         }
        
         $this->session->set_userdata('choosengroup', $choosengroup);
@@ -129,9 +104,9 @@ class Administrator extends Core_Controller{
         $this->session->set_userdata('urlmodule', $url);
         $this->session->set_userdata('margin', $margin);
         redirect($url);
-   }
+    }
    
-   public function NA(){
-        $this->load_content_top_menu('dash/dash_NA');
+    public function NA(){
+        $this->load_content_top_menu('dashboard/comingsoon');
     }
 }

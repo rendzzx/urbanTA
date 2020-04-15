@@ -22,7 +22,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Group Entry</h4>
+                                <h4 class="card-title">Attendance</h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
@@ -34,12 +34,15 @@
                             <div class="card-content collapse show">
                                 <div class="card-body card-dashboard">
                                     <div class="table-responsive">
-                                        <table id="tblgroup" class="table table-striped table-bordered table-hover dataTables" cellspacing="0" width="100%">
+                                        <table id="tblattend" class="table table-striped table-bordered table-hover dataTables" cellspacing="0" width="100%">
                                             <thead>            
                                                 <th class="sorting_asc">No.</th>
-                                                <th hidden="1">Group Id</th>
-                                                <th>Group Code</th>
-                                                <th>Group Description</th>
+                                                <th>Attend Id</th>
+                                                <th>Employee</th>
+                                                <th>Hour IN</th>
+                                                <th>Hour OUT</th>
+                                                <th>Latitude</th>
+                                                <th>Longitude</th>
                                             </thead>
                                             <tbody>
                                             </tbody>
@@ -57,93 +60,91 @@
 
 <!-- js -->
     <script type="text/javascript">
-        var tblgroup = $('#tblgroup').DataTable( {
+        var tblattend = $('#tblattend').DataTable( {
             "responsive":true,
             "ajax" : {
-                "url" : "<?php echo base_url('C_group/getTable');?>",
+                "url" : "<?php echo base_url('C_attandance/getTableAttend');?>",
                 "dataSrc": "",
                 "type": "POST"
             },
             "columns": [
-                {data:'GroupID'},
-                {data:"GroupID", visible:false},
-                {data:"group_cd"},
-                {data:"group_descs"}
+                {data:'attend_id'},
+                {data:'attend_id'},
+                {data:'name'},
+                {data:"hour_in"},
+                {data:"hour_out"},
+                {data:"latitude"},
+                {data:"longitude"}
             ],
             "language": {
                 "decimal": ",",
                 "thousands": ".",
             },
-            "dom": '<"toolbar group">frtip',
-            "responsive": {
-                details: {
-                    type: 'column',
-                    target: 8
-                }
-            }
+            "dom": '<"toolbar group">frtip'
         });
 
-        tblgroup.on( 'order.dt search.dt', function () {
-            tblgroup.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+        tblattend.on( 'order.dt search.dt', function () {
+            tblattend.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
                 cell.innerHTML = i+1;
             } );
         } ).draw();
 
         $("div.group").html(
-            '<button id="addgroup" class="btn btn-primary pull-up" style="margin-top: 5px">Add</button>&nbsp;'+
-            '<button id="editgroup" class="btn btn-info pull-up" style="margin-top: 5px">Edit</button>&nbsp;'+
-            '<button id="deletegroup" class="btn btn-danger pull-up" style="margin-top: 5px">Delete</button>&nbsp;'
+            '<button id="add" class="btn btn-primary pull-up" style="margin-top: 5px">Add</button>&nbsp;'+
+            '<button id="edit" class="btn btn-info pull-up" style="margin-top: 5px">Edit</button>&nbsp;'+
+            '<button id="delete" class="btn btn-danger pull-up" style="margin-top: 5px">Delete</button>&nbsp;'
         );
 
-        tblgroup.on('click', 'tr', function() {
+        tblattend.on('click', 'tr', function() {
             if ($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
             }
             else{
-                tblgroup.$('tr.selected').removeClass('selected');
+                tblattend.$('tr.selected').removeClass('selected');
                 $(this).addClass('selected');
             }
         });
 
-        $('#addgroup').click(function(){
+        $('#add').click(function(){
             $('#modalheader').removeClass('bg-info').addClass('bg-primary white');
+            $('#modaldialog').addClass('modal-lg');
             $('#modaltitle').addClass('white');
-            $('#modaltitle').html('Group Entry');
-            $('#modalbody').load("<?php echo base_url("C_group/addnew");?>");
-            $('#modal').data('GroupID', 0);
+            $('#modaltitle').html('Employee Entry');
+            $('#modalbody').load("<?php echo base_url("C_user/addnew");?>");
+            $('#modal').data('id', 0);
             $('#modal').modal('show');
         })
 
-        $('#editgroup').click(function(){
-            var rows = tblgroup.rows('.selected').indexes();
+        $('#edit').click(function(){
+            var rows = tblattend.rows('.selected').indexes();
             if (rows.length < 1) {
                 Swal.fire("warning",'Please select a row',"warning");
                 return;
             } 
-            var data = tblgroup.rows(rows).data();
-            var groupID = data[0].GroupID;
+            var data = tblattend.rows(rows).data();
+            var id = data[0].userID;
 
-            var site_url = '<?php echo base_url("C_group/addnew/")?>'+groupID;
+            var site_url = '<?php echo base_url("C_user/addnew/")?>';
 
             $('#modalheader').removeClass('bg-primary').addClass('bg-info white');
             $('#modaltitle').addClass('white');
             $('#modaltitle').html('Menu Edit');
             $('#modalbody').load(site_url);
 
-            $('#modal').data('groupID', groupID);
+            $('#modal').data('id', id);
             $('#modal').modal('show');
         })
 
 
-        $('#deletegroup').click(function(){
-            var rows = tblgroup.rows('.selected').indexes();
+        $('#delete').click(function(){
+            var rows = tblattend.rows('.selected').indexes();
             if (rows.length < 1) {
                 Swal.fire("warning",'Please select a row',"warning");
                 return;
             } 
 
-            var data = tblgroup.rows(rows).data();
-            var id = data[0].GroupID;
+            var data = tblattend.rows(rows).data();
+            var id = data[0].userID;
 
             Swal.fire({
                 title: 'Are you sure?',
@@ -166,7 +167,7 @@
         function Delete(id) {
            block(true,'.content-body');
             $.ajax({
-                url : "<?php echo base_url('C_group/delete');?>",
+                url : "<?php echo base_url('C_user/delete');?>",
                 type:"POST",
                 data: { id: id },
                 dataType:"json",
@@ -174,7 +175,7 @@
                     if (event.Error == false) {
                         Swal.fire("success",event.Message,"success");
                         block(false,'.content-body');
-                        tblgroup.ajax.reload(null,true); 
+                        tblattend.ajax.reload(null,true); 
                     }
                     else{
                         Swal.fire("Information",'error Save : '+event.Message,"warning");

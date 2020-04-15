@@ -12,21 +12,27 @@
             <link href="https://fonts.googleapis.com/css?family=Muli:300,300i,400,400i,600,600i,700,700i%7CComfortaa:300,400,700" rel="stylesheet">
             <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css" rel="stylesheet">
 
-            <link href="<?=base_url('app-assets/css/bootstrap.min.css')?>" rel="stylesheet">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/vendors.css')?>">
             <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/app.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/vendors/css/vendors.min.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/bootstrap.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/bootstrap-extended.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/colors.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/components.css')?>">
 
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/core/colors/palette-gradient.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/core/colors/palette-gradient.css')?>">
             <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/pages/login-register.css')?>">
             <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/style.css')?>">
 
-            <script src="<?=base_url('app-assets/js/ShowPCx.js')?>" type="text/javascript"></script>
-            <script src="<?=base_url('app-assets/vendors/js/vendors.min.js')?>" type="text/javascript"></script>
-            <script src="<?=base_url('app-assets/js/core/app-menu.js')?>" type="text/javascript"></script>
-            <script src="<?=base_url('app-assets/js/core/app.js')?>" type="text/javascript"></script>
-            <script src="<?=base_url('app-assets/js/jquery-2.1.1.js')?>"></script>
-            <script src="<?=base_url('app-assets/js/bootstrap.min.js')?>"></script>
-            <script src="<?=base_url('app-assets/js/jquery.validate.min.js'); ?>" type="text/javascript"></script>
+            <script type="text/javascript" src="<?= base_url('app-assets/vendors/js/vendors.min.js')?>"></script>
+            <script type="text/javascript" src="<?= base_url('app-assets/js/core/app-menu.js')?>"></script>
+            <script type="text/javascript" src="<?= base_url('app-assets/js/core/app.js')?>"></script>
+
+            <script type="text/javascript" src="<?=base_url('app-assets/js/core/libraries/jquery.min.js')?>"></script>
+            <script type="text/javascript" src="<?=base_url('app-assets/js/core/libraries/bootstrap.min.js')?>"></script>
+            <script type="text/javascript" src="<?=base_url('app-assets/vendors/js/forms/validation/jquery.validate.min.js'); ?>"></script>
+            
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.7/js/min/perfect-scrollbar.jquery.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.7/css/perfect-scrollbar.min.css" />
 
             <style id="antiClickjack" type="text/css">
                 body {

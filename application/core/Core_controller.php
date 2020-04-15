@@ -12,9 +12,6 @@ class Core_controller extends CI_Controller{
     }
 
     public function load_content($view = "", $content = null){
-        $today = strtotime('now');
-        $userID = $this->session->userdata('Tsname');
-        $cons = $this->session->userdata('Tscons');
         $user_email = $this->session->userdata('Tsemail');
         $entity = $this->session->userdata('Tsentity');
         $project = $this->session->userdata('Tsproject');
@@ -29,22 +26,8 @@ class Core_controller extends CI_Controller{
         }else{
             $content['projectName'] = '';
         }
-
-        $prjpict = "SELECT picture_path FROM mgr.pl_project where project_no='$project'";
-        $pictproj = $this->M_wsbangun->getData_by_query('IFCA', $prjpict);
         
-        $content['propict']='';
-        if ($pictproj) {
-            $content['propict'] = $pictproj[0]->picture_path;
-        }else{
-            $content['propict'] = base_url('app-assets/images/images/white.png');
-        }
-
-        $tabel2 = 'v_cfs_login_user';
-        $kriteria2 = array('userid'=>$userID);
-
-        
-        $sqlpict = "SELECT * from mgr.sysuser where email='$user_email'";
+        $sqlpict = "SELECT * from sysuser where email='$user_email'";
         $pictuser = $this->M_wsbangun->getData_by_query('IFCA', $sqlpict);
 
         $content['pictuser'] = '';
@@ -55,16 +38,63 @@ class Core_controller extends CI_Controller{
             $content['pictuser'] = base_url('app-assets/images/images/white.png');
         }
 
-        $datalist2 = $this->M_wsbangun->getData_by_criteria('IFCA', $tabel2, $kriteria2);
-        $cntdatalist2 = count($datalist2);
-        $content['countproject']=$cntdatalist2;
-
         $this->load->view('template/header', $content);
         if (!empty($view)) {
             $this->load->view($view, $content);
         }
         $this->load->view('template/footer');
-     }
+    }
+
+    public function load_content_top_menu($view = "", $content = null){
+        $projectNo = $this->session->userdata('Tsproject');
+        $usergroup = $this->session->userdata('Tsusergroup');
+        $entity = $this->session->userdata('Tsentity');
+        $projectn = $this->session->userdata('Tsprojectname') ;
+        $user_email = $this->session->userdata('Tsemail');
+        
+        $content['projectName'] = '<a class="nav-link" href="'.base_url().'dash/index" style="padding-top: 0px;padding-right: 0px;">'.$projectn.'</a>';
+
+        // picuser
+            $sqlpict = "SELECT * from sysuser where email='$user_email'";
+            $pictuser = $this->M_wsbangun->getData_by_query('IFCA', $sqlpict);
+            $content['pictuser'] = '';
+            if ($pictuser) {
+                $content['pictuser'] = $pictuser[0]->pict;                   
+            }
+            else{
+                $content['pictuser'] = "https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100&ssl=1";
+            }
+
+        // pic project
+            $prjpict = "SELECT picture_path FROM project where project_no='$projectNo'";
+            $pictproj = $this->M_wsbangun->getData_by_query('IFCA', $prjpict);
+            
+            $content['propict']='';
+            if ($pictproj) {
+                $content['propict'] = $pictproj[0]->picture_path;
+            }else{
+                $content['propict'] = "https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100&ssl=1";
+            }
+
+        // segment
+            $param1 = $this->uri->segment(1);
+            $param2 = $this->uri->segment(2);
+            if(empty($param2)){
+                $path = $param1.'/index';    
+            }else{
+                $path = $param1.'/'.$param2;
+            }
+            $content['path']=$path;
+
+        $content['usergroup']=$usergroup;
+        
+        $this->load->view('template/header2', $content);
+        if (!empty($view)){
+            $this->load->view($view, $content);
+        }
+        $footer = array('copyright' => '');
+        $this->load->view('template/footer2', $footer);
+    }
  
     public function GenerateToken($EmailPassword,$Date,$UserID,$email){
         $token = $email.','.$EmailPassword.','.$UserID.','.$Date;
@@ -80,57 +110,6 @@ class Core_controller extends CI_Controller{
         return $crypted_inputText;
     }
 
-    public function get_dropdown($data){
-        $dataDropdown = array_filter(
-            $data,function($a) {
-                return $a->FieldType === 'DropDown';
-        });
-        $dt = array();
-        foreach ($dataDropdown as $key ) {
-            $view = 'mgr.'.$key->DropdownSource;        
-            $sql = 'Select * from '.$view;
-
-            $DB2 = $this->load->database('ifca3', TRUE);
-           
-            $qq = $DB2->query($sql);     
-            $query = $qq->result(); 
-             $DB2->close();
-            $dt[$key->KeyName] = $query;
-
-        }
-        return $dt;
-    }
-
-    public function get_menu($group=''){
-        $this->load->database();
-        $DB2 = $this->load->database('ifca3', TRUE);
-
-        $table = "select ROW_NUMBER() OVER (ORDER BY parent_seq, child_seq, mgr.v_sysMenuMobileGroup.MenuID ASC) AS [row_number], ";
-        $table .= " * from mgr.v_sysMenuMobileGroup";
-        $table .= " where GroupCd =? ";
-        $table .= " order by parent_seq, child_seq";
-
-        $where = array($group);
-        $qq = $DB2->query($table, $where);     
-        $query = $qq->result();        
-
-        return ($query);
-    }
-
-    public function get_field(){
-        $this->load->database();
-        $DB2 = $this->load->database('ifca3', TRUE);
-
-        $table = "select  ";
-        $table .= " * from mgr.sysField";
-        $table .= " order by FieldOrder";
-       
-        $qq = $DB2->query($table);     
-        $query = $qq->result();        
-         $DB2->close();
-        return ($query);
-    }
-
     public function generateRandomString($length = 10) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -139,90 +118,6 @@ class Core_controller extends CI_Controller{
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
-    }
-
-    public function load_content_top_menu($view = "", $content = null){
-        $projectNo = $this->session->userdata('Tsproject');
-        $usergroup = $this->session->userdata('Tsusergroup');
-        $entity = $this->session->userdata('Tsentity');
-        $today = date('d/m/Y');
-        $pday = strtotime('now');
-
-        $projectn = $this->session->userdata('Tsprojectname') ;
-        $user_email = $this->session->userdata('Tsemail');
-        
-        $projectnm = '';
-        $projectnm = ' <a class="nav-link" href="'.base_url().'dash/index" style="padding-top: 0px;padding-right: 0px;">'.$projectn.'</a>';
-        
-        
-        $content['projectName'] = $projectnm;
-
-        $sqlpict = "SELECT * from mgr.sysuser where email='$user_email'";
-        $pictuser = $this->M_wsbangun->getData_by_query('IFCA', $sqlpict);
-
-
-        
-        $content['pictuser'] = '';
-        if ($pictuser) {
-            $content['pictuser'] = $pictuser[0]->pict;                   
-        }
-        else{
-            $content['pictuser'] = "https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100&ssl=1";
-        }
-
-        $prjpict = "SELECT picture_path FROM mgr.pl_project where project_no='$projectNo'";
-        $pictproj = $this->M_wsbangun->getData_by_query('IFCA', $prjpict);
-        
-        $content['propict']='';
-        if ($pictproj) {
-            $content['propict'] = $pictproj[0]->picture_path;
-        }else{
-            $content['propict'] = "https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100&ssl=1";
-        }
-
-
-
-        $param1 = $this->uri->segment(1);
-        $param2 = $this->uri->segment(2);
-
-        if(empty($param2)){
-            $path = $param1.'/index';    
-        }else{
-            $path = $param1.'/'.$param2;
-        }
-
-        $cons = $this->session->userdata('Tscons');
-        $user_email = $this->session->userdata('Tsemail'); 
-        $entity = $this->session->userdata('Tsentity');
-        $project = $this->session->userdata('Tsproject');
-        
-        $content['path']=$path;
-        $userID = $this->session->userdata('Tsname');
-        $content['usergroup']=$usergroup;
-        $tabel2 = 'v_cfs_login_user';
-        $kriteria2 = array('userid'=>$userID);
-
-        $datalist2 = $this->M_wsbangun->getData_by_criteria('IFCA', $tabel2, $kriteria2);
-        $cntdatalist2 = count($datalist2);
-        $content['countproject']=$cntdatalist2;
-
-        $sqlpict = "SELECT * from mgr.sysuser where email='$user_email'";
-        $pictuser = $this->M_wsbangun->getData_by_query('IFCA', $sqlpict);
-
-        $content['pictuser'] = '';
-        if ($pictuser) {
-            $content['pictuser'] = $pictuser[0]->pict;                   
-        }
-        else{
-            $content['pictuser'] = "https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100&ssl=1";
-        }
-
-        $this->load->view('template/header2', $content);
-        if (!empty($view)){
-            $this->load->view($view, $content);
-        }
-        $footer = array('copyright' => '');
-        $this->load->view('template/footer2', $footer);
     }
 
     public function time_elapsed_string($datetime, $full = false) {

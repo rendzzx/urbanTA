@@ -61,10 +61,10 @@ class Dynamic_menu_left {
         // $nupMenu = $menuhide['nupMenu'];
         // $bookingMenu = $menuhide['bookingMenu'];
 
-        // $table = 'mgr.v_sysMenuGroup2';       
+        // $table = 'v_sysMenuGroup2';       
 
-        $table = "select ROW_NUMBER() OVER (ORDER BY parent_seq, child_seq, mgr.v_sysMenuGroup.MenuID ASC) AS [row_number], ";
-        $table .= " * from mgr.v_sysMenuGroup";
+        $table = "select ROW_NUMBER() OVER (ORDER BY parent_seq, child_seq, v_sysMenuGroup.MenuID ASC) AS [row_number], ";
+        $table .= " * from v_sysMenuGroup";
         $table .= " where GroupCd ='$usergroup' ";
         $table .= " order by parent_seq, child_seq";
 
@@ -210,10 +210,10 @@ class Dynamic_menu_left {
         // $nupMenu = $menuhide['nupMenu'];
         // $bookingMenu = $menuhide['bookingMenu'];
 
-        // $table = 'mgr.v_sysMenuGroup2';       
+        // $table = 'v_sysMenuGroup2';       
 
-        $table = "select ROW_NUMBER() OVER (ORDER BY parent_seq, child_seq, mgr.v_sysMenuMGMGroup.MenuID ASC) AS [row_number], ";
-        $table .= " * from mgr.v_sysMenuMGMGroup";
+        $table = "select ROW_NUMBER() OVER (ORDER BY parent_seq, child_seq, v_sysMenuMGMGroup.MenuID ASC) AS [row_number], ";
+        $table .= " * from v_sysMenuMGMGroup";
         $table .= " where GroupCd ='$usergroup' ";
         $table .= " order by parent_seq, child_seq";
 

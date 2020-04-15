@@ -2,10 +2,9 @@
 // header('Access-Control-Allow-Origin: *');
 ini_set('max_execution_time', 0);
 // ini_set('memory_limit','2048M');
-class api extends Core_Controller{
+class Api extends Core_Controller{
     public function __construct(){
         parent::__construct();
-        $this->load->model('M_api');
     }
 
     public function Login(){
@@ -15,167 +14,44 @@ class api extends Core_Controller{
             'Message' => null 
         );
 
-        $dateNow = date('d M Y H:i:s');
-        $date = new Datetime($dateNow);
-
-        //add 1 bulam
-        $date->add(new DateInterval('P1M'));
-        $ExpiredOn = $date->format('d M Y H:i:s');
-
         $Data = file_get_contents("php://input");
         $Data = json_decode($Data);
 
-        $em = $Data->email;
-        $pass = $Data->password;
-        $device = $Data->device;
-        $token = $Data->token;
-        $mac = $Data->mac;
-        $token_firebase = $Data->token_firebase;
-        $audit_date = date('d M Y H:i:s');
+        $email      = $Data->email;
+        $password   = $Data->password;
+        if (!empty($email) && !empty($password)) {
+            $email      = strtolower($email);
+            $password   = strtolower($password);
+            $COM        = strtoupper(md5(strtoupper(md5($email)). "P@ssw0rd" .strtoupper(md5($password))));
 
-        $sql = "SELECT group_cd FROM mgr.sysuser where email='$em'";
-        $group = $this->M_api->getData_by_query('IFCA', $sql);
-
-        if ($group) {
-            $group_cd = $group[0]->group_cd;
-        } else {
-            $callback['Error'] = true;
-            $callback['Data'] = null;
-            $callback['Message'] = 'Incorrect username or password';
-            echo  json_encode($callback);
-            exit();
-        }
-
-        $sql2 = "SELECT count(*) as cnt FROM mgr.token_firebase where mac_address='$mac'";
-        $tokens = $this->M_api->getData_by_query('IFCA', $sql2);
-        $cnttoken = $tokens[0]->cnt;
-        if ($cnttoken > 0) {
-            $data = array(
-                'token' => $token,
-                'email' => strtolower($em),
-                'group_cd' => $group_cd,
-                'audit_date' => $audit_date,
-                'mac_address' => $mac
-            );
-            $where = array(
-                'mac_adderss' => $mac,
-                'devices' => 'android'
-            );
-            $update = $this->M_api->updateData('IFCA', 'token_firebase', $data, $where);
-        }
-        else {
-            $data = array(
-                'token' => $token_firebase,
-                'devices' => $device,
-                'email' => strtolower($em),
-                'group_cd' => $group_cd,
-                'audit_date' => $audit_date,
-                'mac_address' => $mac
-            );
-            $insert = $this->M_api->insertData('IFCA', 'token_firebase', $data);
-        }
-
-        if (!empty($em) && !empty($pass)) {
-            $email = strtolower($em); //$this->security->xss_clean(trim($this->input->post('username')));
-            $email_user = $email;
-            $email = strtoupper(md5($email));
-            $paswd = $pass; //$this->security->xss_clean(trim($this->input->post('password')));
-            $paswd = strtoupper(md5($paswd));
-
-            $DB2 = $this->load->Database('IFCA', TRUE);
-            $sql = "select * from mgr.sysUser where isnull(sosmed,'')='' AND email =? AND status_activate = 'Y' ";
-            $where = array($email_user);
-            $qq = $DB2->query($sql, $where);
-            $DatasysUser = $qq->result();
-            $DB2->close();
-
-            $PS = $email . 'P@ssw0rd' . $paswd;
-            $EmailPassword = strtoupper(md5($PS));
+            $sql = "SELECT * from v_employee_user where  email = '$email' AND status_activate = 'Y' ";
+            $DatasysUser = $this->M_wsbangun->getData_by_query('IFCA', $sql);
+            
             if ($DatasysUser) {
-                if ($EmailPassword != strtoupper($DatasysUser[0]->COM)) {
+                if ($COM != $DatasysUser[0]->password) {
                     $callback['Message'] = "Wrong Password";
                     $callback['Data'] = null;
                     $callback['Error'] = true;
-                    echo  json_encode($callback);
-                    exit();
                 }
-                // is resset password
-                if ($DatasysUser[0]->isResetLogin == true) {
+                else{
                     $callback['Data'] = array(
-                        'DashMenu' => null,
-                        'name' => $DatasysUser[0]->name,
-                        'user' => $email_user,
-                        'handphone' => $DatasysUser[0]->Handphone,
-                        'UserId' => $DatasysUser[0]->userID,
-                        'Token' => null,
-                        'Group' => $DatasysUser[0]->Group_Cd,
-                        'isResetPass' => $DatasysUser[0]->isResetLogin,
-                        'AgentCd' => $DatasysUser[0]->agent_cd,
-                        'rowID' => $DatasysUser[0]->rowID
+                        'user_id'       => $DatasysUser[0]->userID,
+                        'email'         => $email,
+                        'name'          => $DatasysUser[0]->name,
+                        'group_cd'      => $DatasysUser[0]->Group_Cd,
+                        'agent_cd'      => $DatasysUser[0]->agent_cd,
+                        'debtor_acct'   => $DatasysUser[0]->debtor_acct,
+                        'employee_id'   => $DatasysUser[0]->employee_id,
+                        'handphone'     => $DatasysUser[0]->handphone,
+                        'nik'           => $DatasysUser[0]->nik,
+                        'npwp'          => $DatasysUser[0]->npwp,
+                        'division'      => $DatasysUser[0]->division_name,
+                        'postition'     => $DatasysUser[0]->postition_name,
                     );
-                    $callback['Message'] = "Reset Password";
                     $callback['Error'] = false;
-                    echo  json_encode($callback);
-                    exit();
                 }
-
-                //cek token sebelum'a and delete
-                $param = array('Token' => $token);
-                $countToken = $this->M_api->getCount_by_criteria('IFCA', 'sysUserSession', $param);
-                // var_dump($countToken);
-                if ((int) $countToken > 0) {
-                    $this->M_api->deletedata('IFCA', 'sysUserSession', $param);
-                }
-
-                //Generate Token
-                $GenerateToken = $this->GenerateToken($EmailPassword, $ExpiredOn, $DatasysUser[0]->userID, $email_user);
-                //Insert user session
-                $ArSession = array(
-                    'IdUser'    =>  $DatasysUser[0]->userID,
-                    'Token'     =>   $GenerateToken,
-                    'LocationID'  =>  '1',
-                    'LocationDescs'  =>  'Waskita',
-                    'LastLogin' => $dateNow,
-                    'ExpireOn'  => $ExpiredOn,
-                    'IpAddress' => $_SERVER['REMOTE_ADDR'],
-                    'Device'    => $device,
-                    'audit_date' => $dateNow,
-                    'audit_user' => $email_user
-                );
-                $Tsession = $this->SaveUserSession($ArSession);
-
-                $DatasysUserSession = array(
-                    'email' => $DatasysUser[0]->email,
-                    'login_type' => 'Mobile',
-                    'apps_type' => 'Urban Sales',
-                    'ip_Address' => '192.168.3.1',
-                    'devices' => 'android',
-                    'login_date' => date("Y-m-d")
-                );
-                $this->M_api->insertData('IFCA', 'sysusersessionlog', $DatasysUserSession);
-
-                $dataField = $this->get_field();
-                $dataDropdown = $this->get_dropdown($dataField);
-                // var_dump($dataDropdown);exit;
-                $callback['Data'] = array(
-                    'DashMenu' => $this->get_menu($DatasysUser[0]->Group_Cd),
-                    // 'SideMenu'=>$this->get_menu($DatasysUser[0]->Group_Cd),
-                    'name' => $DatasysUser[0]->name,
-                    'pict' => $DatasysUser[0]->pict,
-                    'user' => $email_user,
-                    'handphone' => $DatasysUser[0]->Handphone,
-                    'UserId' => $DatasysUser[0]->userID,
-                    'Token' => $GenerateToken,
-                    'Group' => $DatasysUser[0]->Group_Cd,
-                    'isResetPass' => false,
-                    'AgentCd' => $DatasysUser[0]->agent_cd,
-                    // 'DynField'=>$dataField,
-                    // 'DynDropdown'=>$dataDropdown,
-                    'Debtor_acct' => $DatasysUser[0]->debtor_acct,
-                    'rowID' => $DatasysUser[0]->rowID
-                );
-                $callback['Error'] = false;
-            } else {
+            }
+            else {
                 $callback['Message'] = "Wrong Email";
                 $callback['Data'] = null;
                 $callback['Error'] = true;
@@ -188,60 +64,134 @@ class api extends Core_Controller{
         echo  json_encode($callback);   
     }
 
-    public function Logout($user=''){
-        // var_dump($this->input->request_headers());
-        // $this->_Authorization();
-        $Error = false;
-        $Data = null;
-        $psn = '';
-        $dateNow = date('d M Y H:i:s');
-
-        $Data = file_get_contents("php://input");
-        $Data = json_decode($Data);
-
-        $email = $Data->email;
-        $ipAddress = $Data->ipAddress;
-        $device = $Data->device;
-        // var_dump($user);["Token"]
-        if ($user != '') {
-            $Token = $this->input->request_headers()["token"];
-
-            $where = array(
-                'Token' => $Token,
-                'IdUser' => $user
+    // ATTEND
+        public function cekAttend(){
+            $callback = array(
+                'Error' => false,
+                'Data' => null,
+                'Message' => null 
             );
 
-            $delete = $this->M_api->deletedata('IFCA', 'sysUserSession', $where);
-            if ($delete == 'OK') {
+            $Data = file_get_contents("php://input");
+            $Data = json_decode($Data);
 
-                $DatasysUserSession = array(
-                    'email' => $email,
-                    'login_type' => 'O',
-                    'apps_type' => 'S',
-                    'ipAddress' => $ipAddress,
-                    'device' => $device,
-                    'login_date' => date("Y-m-d H:i:s")
+            $email = $Data->email;
+            $employee_id = $Data->employee_id;
+            $today = date("d M Y");
+
+            $query = "SELECT * FROM v_attend_trx WHERE employee_id  = '$employee_id' AND day = '$today' ";
+            $dataattend = $this->M_wsbangun->getData_by_query('IFCA', $query);
+            // var_dump($dataattend);die;
+            if ($dataattend) {
+                $callback['Data'] = array(
+                    'attend_id'     => $dataattend[0]->attend_id,
+                    'employee_id'   => $dataattend[0]->employee_id,
+                    'day'           => $dataattend[0]->day,
+                    'name'          => $dataattend[0]->name,
+                    'hour_in'       => $dataattend[0]->hour_in,
+                    'hour_out'      => $dataattend[1]->hour_out,
+                    'latitude'      => $dataattend[0]->latitude,
+                    'longitude'     => $dataattend[0]->longitude,
+                    'ket'           => $dataattend[0]->ket,
                 );
-
-                $insertLog = $this->M_api->insertData('IFCA', 'sysusersessionlog', $DatasysUserSession);
-
-                $psn = 'Berhasil Logout';
-            } else {
-                $psn = $delete;
-                $Error = true;
             }
-        } else {
-            $psn = 'Parameter cant be null';
-            $Error = true;
+            else{
+                $callback['Error'] = true;
+                $callback['Message'] = 'No data available';
+            }
+
+            echo json_encode($callback);
         }
 
+        public function Attend(){
+            $callback = array(
+                'Error' => false,
+                'Data' => null,
+                'Message' => null,
+                'Type' => null
+            );
 
-        $msg1 = array(
-            'Error' => $Error,
-            'Data' => $Data,
-            'Pesan' => $psn,
-            'Status' => 200
-        );
-        echo  json_encode($msg1);
-    }
+            $Data = file_get_contents("php://input");
+            $Data = json_decode($Data);
+
+            $employee_id = $Data->employee_id;
+            $latitude = $Data->latitude;
+            $longitude = $Data->longitude;
+            $today = date("d M Y");
+            $hour  = date("d M Y H:i:s");
+
+            $query = "SELECT * FROM attendance_trx WHERE employee_id  = '$employee_id' AND day = '$today' ";
+            $dataattend = $this->M_wsbangun->getData_by_query('IFCA', $query);
+            // var_dump($dataattend);die;
+            if (count($dataattend) == 0) {
+                $data = array(
+                    'employee_id'   => $employee_id,
+                    'day'           => $today
+                );
+                $hd = $this->M_wsbangun->insertData('IFCA', 'attendance_trx', $data);
+                if ($hd) {
+                    $callback['Message'] = 'Success insert hd';
+                    $callback['Type'] = 'IN';
+                }
+                else {
+                    $callback['Error'] = true;
+                    $callback['Message'] = 'error insert hd';
+                    goto forceExit;
+                }
+            }
+
+            $query = "SELECT attend_id FROM attendance_trx WHERE employee_id  = '$employee_id' AND day = '$today' ";
+            $dataattend = $this->M_wsbangun->getData_by_query('IFCA', $query);
+
+            $attend_id  = $dataattend[0]->attend_id;
+            if ($attend_id > 1) {
+                $query = "SELECT attend_id, ket FROM attendance_trx_dt WHERE attend_id  = '$attend_id' ";
+                $dataattend = $this->M_wsbangun->getData_by_query('IFCA', $query);
+
+                if (count($dataattend) == 0) {
+                    $data_in = array(
+                        'attend_id'     => $attend_id,
+                        'hour_in'       => $hour,
+                        'latitude'      => $latitude,
+                        'longitude'     => $longitude,
+                        'ket'           => 'in'
+                    );
+                    $dt_in = $this->M_wsbangun->insertData('IFCA', 'attendance_trx_dt', $data_in);
+                    if ($dt_in) {
+                        $callback['Message'] = 'Success insert dt_in';
+                        $callback['Type'] = 'IN';
+                    }
+                    else {
+                        $callback['Error'] = true;
+                        $callback['Message'] = 'error insert dt_in';
+                    }
+                }
+                elseif (count($dataattend) == 1){
+                    
+                    $data_out = array(
+                        'attend_id'     => $attend_id,
+                        'hour_out'      => $hour,
+                        'latitude'      => $latitude,
+                        'longitude'     => $longitude,
+                        'ket'           => 'out'
+                    );
+                    $dt_out = $this->M_wsbangun->insertData('IFCA', 'attendance_trx_dt', $data_out);
+                    if ($dt_out) {
+                        $callback['Message'] = 'Success insert dt_out';
+                        $callback['Type'] = 'OUT';
+                    }
+                    else {
+                        $callback['Error'] = true;
+                        $callback['Message'] = 'error insert dt_out';
+                    }
+                }
+                else{
+                    $callback['Error'] = true;
+                    $callback['Message'] = 'You already attend today';
+                }
+            }
+            forceExit:
+            echo json_encode($callback);
+        }
+    // ATTEND
 }

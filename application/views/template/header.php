@@ -10,19 +10,40 @@
         <link href="https://fonts.googleapis.com/css?family=Muli:300,300i,400,400i,600,600i,700,700i%7CComfortaa:300,400,700" rel="stylesheet">
         <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css" rel="stylesheet">
 
-        <!-- BEGIN VENDOR CSS-->
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/vendors.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/vendors/css/charts/chartist.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/vendors/css/charts/chartist-plugin-tooltip.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/app.css')?>">
-        <!-- END VENDOR CSS-->
-        <!-- BEGIN Page Level CSS-->
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/core/menu/menu-types/horizontal-menu.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/core/colors/palette-gradient.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/pages/chat-application.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/pages/dashboard-analytics.css')?>">
-        <!-- END Page Level CSS-->
-        <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/style.css')?>">
+        <!-- BEGIN Vendor CSS-->
+            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/vendors/css/vendors.min.css')?>">
+        <!-- END: Vendor CSS-->
+
+        <!-- BEGIN: Theme CSS-->
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/bootstrap.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/bootstrap-extended.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/colors.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/components.css')?>">
+        <!-- END: Theme CSS-->
+
+        <!-- BEGIN: Page CSS-->
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/core/menu/menu-types/horizontal-menu.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/core/colors/palette-gradient.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/core/colors/palette-gradient.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/pages/chat-application.css')?>">
+        <!-- END: Page CSS-->
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.7/js/min/perfect-scrollbar.jquery.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.7/css/perfect-scrollbar.min.css" />
+
+        <!-- BEGIN: Vendor JS-->
+            <script type="text/javascript" src="<?= base_url('app-assets/vendors/js/vendors.min.js')?>"></script>
+            <script type="text/javascript" src="<?= base_url('app-assets/js/core/libraries/jquery.min.js')?>"></script>
+            <script type="text/javascript" src="<?= base_url('app-assets/js/core/libraries/bootstrap.min.js')?>"></script>
+        <!-- BEGIN Vendor JS-->
+
+        <!-- BEGIN: Page Vendor JS-->
+            <script type="text/javascript" src="<?= base_url('app-assets/vendors/js/ui/jquery.sticky.js')?>"></script>
+        <!-- END: Page Vendor JS-->
+
+        <!-- BEGIN: Theme JS-->
+            <script type="text/javascript" src="<?= base_url('app-assets/js/core/app-menu.js')?>"></script>
+            <script type="text/javascript" src="<?= base_url('app-assets/js/core/app.js')?>"></script>
+        <!-- END: Theme JS-->
     </head>
     <style type="text/css" rel="stylesheet">
         #floating-button{
@@ -138,7 +159,7 @@
 
 <!-- content -->
     <body class="horizontal-layout horizontal-menu 2-columns menu-expanded" data-open="hover" data-menu="horizontal-menu" data-color="bg-gradient-x-purple-blue" data-col="2-columns" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="" oncontextmenu="return false;">
-        <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow navbar-static-top navbar-light navbar-brand-center">
+        <!-- <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow navbar-static-top navbar-light navbar-brand-center">
             <div class="navbar-header">
                 <ul class="nav navbar-nav flex-row">
                     <li class="nav-item mobile-menu d-md-none mr-auto">
@@ -200,19 +221,18 @@
                     </div>
                 </div>
             </div>
-        </nav>
+        </nav> -->
 
         <div class="header-navbar navbar-expand-sm navbar navbar-horizontal navbar-fixed navbar-dark navbar-without-dd-arrow navbar-shadow" role="navigation" data-menu="menu-wrapper">
             <div class="navbar-container main-menu-content" data-menu="menu-container">
                 <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-                    <?php if($countproject>1){ ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?=base_url('dash/index');?>">
-                                    <i class="ft-home"></i>
-                                    <span style="font-size: 12px !important"></span>
-                                </a>
-                            </li>
-                    <?php } ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?=base_url('dash/index');?>">
+                            <i class="ft-home"></i>
+                            <span style="font-size: 12px !important"></span>
+                        </a>
+                    </li>
+            
                     <li class="dropdown nav-item" data-menu="dropdown">
                         <a class=" nav-link" href="#" >
                             <span>

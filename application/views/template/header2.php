@@ -14,74 +14,45 @@
         <link href="https://fonts.googleapis.com/css?family=Muli:300,300i,400,400i,600,600i,700,700i%7CComfortaa:300,400,700" rel="stylesheet">
         <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css" rel="stylesheet">
         
-        <!-- BEGIN Page Level CSS-->
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/app.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/bootstrap.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/colors.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/vendors.css')?>">
+        <!-- BEGIN Vendor CSS-->
+            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/vendors/css/vendors.min.css')?>">
+        <!-- END: Vendor CSS-->
 
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/core/menu/menu-types/horizontal-menu.css')?>">
+        <!-- BEGIN: Theme CSS-->
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/bootstrap.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/bootstrap-extended.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/colors.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/components.css')?>">
+        <!-- END: Theme CSS-->
 
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/core/colors/palette-gradient.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/core/colors/palette-switch.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/core/colors/palette-tooltip.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/core/colors/palette-variables.css')?>">
-
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/pages/timeline.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/pages/dashboard-ecommerce.css')?>">
-
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/fonts/simple-line-icons/style.css')?>">
-            
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/file-uploaders/dropzone.css')?>">
-        <!-- END Page Level CSS-->
+        <!-- FONT -->
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/fonts/feather/style.min.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/fonts/line-awesome/css/line-awesome.min.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/fonts/simple-line-icons/style.min.css')?>">
+        <!-- FONT -->
         
-        <!-- BEGIN VENDOR CSS-->
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/forms/icheck/icheck.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/forms/icheck/custom.css')?>">
-            
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/forms/select2/select2.min.css')?>">
-            
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/forms/extended/form-extended.min.css')?>">
-            
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/forms/validation/form-validation.min.css')?>">
+        <!-- BEGIN: Page CSS-->
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/core/menu/menu-types/horizontal-menu.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/core/colors/palette-gradient.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/core/colors/palette-gradient.css')?>">
+            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/pages/chat-application.css')?>">
+        <!-- END: Page CSS-->
 
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/sweetalert/sweetalert.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/sweetalert/themes/facebook/facebook.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/sweetalert/themes/google/google.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/sweetalert/themes/twitter/twitter.css')?>">
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.7/js/min/perfect-scrollbar.jquery.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.7/css/perfect-scrollbar.min.css" />
 
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/forms/switchery/switchery.min.css')?>">
+        <!-- BEGIN: Vendor JS-->
+            <script type="text/javascript" src="<?= base_url('app-assets/vendors/js/vendors.min.js')?>"></script>
+        <!-- BEGIN Vendor JS-->
 
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/dataTables/datatables.min.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/plugins/dataTables/extensions/responsive.datatables.min.css')?>">
-        <!-- END VENDOR CSS-->
+        <!-- BEGIN: Page Vendor JS-->
+            <script type="text/javascript" src="<?= base_url('app-assets/vendors/js/ui/jquery.sticky.js')?>"></script>
+        <!-- END: Page Vendor JS-->
 
-            <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/css/style.css')?>">
-
-        <!-- js -->
-            <script type="text/javascript" src="<?=base_url('app-assets/js/core/libraries/jquery.min.js')?>"></script>
-            <script type="text/javascript" src="<?=base_url('app-assets/js/core/libraries/bootstrap.min.js')?>"></script>
-        
-            <script type="text/javascript" src="<?=base_url('app-assets/js/core/app-menu.js')?>"></script>
-            <script type="text/javascript" src="<?=base_url('app-assets/js/core/app.js')?>"></script>
-
-            <script type="text/javascript" src="<?=base_url('app-assets/js/tables/datatables.min.js')?>"></script>
-            <script type="text/javascript" src="<?=base_url('app-assets/js/tables/dataTables.responsive.min.js')?>"></script>
-            <script type="text/javascript" src="<?=base_url('app-assets/js/tables/dataTables.scroller.min.js')?>"></script>
-            <script type="text/javascript" src="<?=base_url('app-assets/js/tables/dataTables.select.min.js')?>"></script>
-
-            <script type="text/javascript" src="<?=base_url('app-assets/js/forms/icheck/icheck.min.js')?>"></script>
-            <script type="text/javascript" src="<?=base_url('app-assets/js/forms/select/select2.full.min.js')?>"></script>
-            <script type="text/javascript" src="<?=base_url('app-assets/js/forms/switchery/switchery.min.js')?>"></script>
-            <script type="text/javascript" src="<?=base_url('app-assets/js/forms/validation/jquery.validate.min.js')?>"></script>
-
-            <script type="text/javascript" src="<?=base_url('app-assets/js/modal/sweetalert.min.js')?>"></script>
-
-
-            <script type="text/javascript" src="<?=base_url('app-assets/js/scripts.js')?>"></script>
-            <script type="text/javascript" src="<?=base_url('app-assets/js/vendors.min.js')?>"></script>
-            <script type="text/javascript" src="<?=base_url('app-assets/js/ui/jquery.sticky.js')?>"></script>
-        <!-- js -->
+        <!-- BEGIN: Theme JS-->
+            <script type="text/javascript" src="<?= base_url('app-assets/js/core/app-menu.js')?>"></script>
+            <script type="text/javascript" src="<?= base_url('app-assets/js/core/app.js')?>"></script>
+        <!-- END: Theme JS-->
     </head>
     <style type="text/css" rel="stylesheet">
         #floating-button{
@@ -205,11 +176,6 @@
                             <i class="ft-menu font-large-1"></i>
                         </a>
                     </li>
-                    <!-- <li class="nav-item" >
-                        <a class="navbar-brand" href="<?php echo base_url();?>">
-                            <img class="brand-logo" alt="ifca logo" src="<?=base_url('app-assets/images/logo/logo.png')?>">
-                        </a>
-                    </li> -->
                     <li class="nav-item d-md-none">
                         <a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile">
                             <i class="la la-ellipsis-v"></i>

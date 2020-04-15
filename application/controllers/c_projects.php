@@ -11,7 +11,7 @@ class C_projects extends Core_Controller{
         $admin = $this->session->userdata('Tsysadmin');
         $projectName = $this->session->userdata('Tsprojectname');
         $content = array(
-            'project'=>$projectName
+            'project' => $projectName
         );
         
     	$this->load_content_top_menu('project/index',$content);
