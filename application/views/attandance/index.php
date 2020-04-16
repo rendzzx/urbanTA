@@ -39,10 +39,11 @@
                                                 <th class="sorting_asc">No.</th>
                                                 <th>Attend Id</th>
                                                 <th>Employee</th>
+                                                <th>Day</th>
                                                 <th>Hour IN</th>
                                                 <th>Hour OUT</th>
-                                                <th>Latitude</th>
-                                                <th>Longitude</th>
+                                                <th>Location IN</th>
+                                                <th>Location OUT</th>
                                             </thead>
                                             <tbody>
                                             </tbody>
@@ -71,10 +72,44 @@
                 {data:'attend_id'},
                 {data:'attend_id'},
                 {data:'name'},
-                {data:"hour_in"},
-                {data:"hour_out"},
-                {data:"latitude"},
-                {data:"longitude"}
+                {data:'day',
+                    render: function (data) {
+                        var date = new Date(data);
+                        // return data;
+                        var d = date.getDate();
+                        var m = date.getMonth();
+                        var y = date.getFullYear();
+                        return d +'-'+ m +'-'+ y;
+                    }
+                },
+                {data:"hour_in",
+                    render: function (data) {
+                        var date = new Date(data);
+                        var hr = date.getHours();
+                        var mi = date.getMinutes();
+                        var se = date.getSeconds();
+                        return hr +':'+ mi +':'+ se;
+                    }
+                },
+                {data:"hour_out",
+                    render: function (data) {
+                        var date = new Date(data);
+                        var hr = date.getHours();
+                        var mi = date.getMinutes();
+                        var se = date.getSeconds();
+                        return hr +':'+ mi +':'+ se;
+                    }
+                },
+                {data:"latitude_in",
+                    render: function (data,type,row) {
+                        return 'Lat : '+row.latitude_in +' Lon : '+ row.longitude_in;
+                    }
+                },
+                {data:"latitude_out",
+                    render: function (data,type,row) {
+                        return 'Lat : '+row.latitude_out +' Lon : '+ row.longitude_out;
+                    }
+                }
             ],
             "language": {
                 "decimal": ",",

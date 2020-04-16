@@ -25,61 +25,63 @@ class Auth extends Core_Controller{
     }
 
     public function login(){
+        $callback = array(
+            'Data' => null,
+            'Message' => null,
+            'Error' => false
+        );
+
         if($_POST){
-            $email = $this->security->xss_clean($this->input->post('txtUser'));
-            $paswd = $this->security->xss_clean(trim($this->input->post('txtPass')));
-            $paswd = strtoupper(md5($paswd));
-            $captcha = strtoupper($this->input->post('userCaptcha', TRUE));
-            $this->form_validation->set_rules('txtUser', 'Email', 'required');
+            $email      = $this->security->xss_clean($this->input->post('email'));
+            $password   = $this->security->xss_clean(trim($this->input->post('password')));
+            $COM        = strtoupper(md5(strtoupper(md5($email)). "P@ssw0rd" .strtoupper(md5($password))));
+
+            $userCaptcha = $this->input->post('userCaptcha', TRUE);
+
+            $this->form_validation->set_rules('email', 'Email', 'required');
+            $this->form_validation->set_rules('password', 'Password', 'required');
             $this->form_validation->set_rules('userCaptcha', 'Captcha', 'required');
 
             if($this->form_validation->run() == false){
                 $cp = $this->setCaptcha();
                 $this->load->view('Auth/login', $cp);
-                return;
             } 
             else{
-                $cc = strtoupper($this->session->userdata('captchaWord'));
-                if($cc!=$captcha){
-                    redirect('Auth');
+                $sessCaptcha = strtoupper($this->session->userdata('captchaWord'));
+                if($sessCaptcha != $userCaptcha){
+                    $callback['Message']    = 'Captcha not valid';
+                    $callback['Error']      = true;
                 }
-                $sql = "SELECT * from v_sysUser where email='$email' and status_activate ='Y'";
-                $datas = $this->M_wsbangun->getData_by_query('IFCA', $sql);
-                $EmailPassword = strtoupper(md5(strtoupper(md5($email)).'P@ssw0rd'.$paswd));
-          
-                if($datas){
-                    if($EmailPassword != strtoupper($datas[0]->COM)){
-                        $this->session->set_userdata('Error_Login', 'Wrong Password!');
-                        redirect('Auth');
-                    } 
-                    
-                    if(!$this->cekMenuGroup($datas[0]->Group_Cd)>0){
-                        $this->session->set_userdata('Error_Login', "don't have Menu, Please contact your administrator! Groud cd empty");
-                        redirect('Auth');
-                    }
-                  
-                    if($datas[0]->isResetLogin==true){
-                        $this->session->set_userdata('Tsemail', $datas[0]->email);
-                        $this->session->set_userdata('isReset', $datas[0]->isResetLogin);
-                        redirect('ResetPassword/reset');
-                    }
-                    $this->session->set_userdata('is_Staff_logged', true);
-                    $this->session->set_userdata('Tsname', $datas[0]->userID);
-                    $this->session->set_userdata('Tsemail', $datas[0]->email);
-                    $this->session->set_userdata('Tsuname', $datas[0]->name);
-                    $this->session->set_userdata('Tsprojectname', '');
-                    $this->session->unset_userdata('captchaWord');
-                    $this->session->set_userdata('Tsusergroup', $datas[0]->Group_Cd);
-                    $this->session->set_userdata('Tsdebtor_acct', $datas[0]->debtor_acct);
-                    $this->session->set_userdata('Tsdashboard', 'administrator/index/');
-                    redirect('Dash');
-                } 
                 else{
-                    $this->session->set_userdata('Error_Login', 'User is not valid');
-                    redirect('Auth');
+                    $sql = "SELECT * from v_sysUser where email='$email' and status_activate ='Y'";
+                    $datas = $this->M_wsbangun->getData_by_query('IFCA', $sql);
+
+                    if($datas){
+                        if($COM == strtoupper($datas[0]->COM)){
+                            $this->session->set_userdata('is_Staff_logged', true);
+                            $this->session->set_userdata('Tsname', $datas[0]->userID);
+                            $this->session->set_userdata('Tsemail', $datas[0]->email);
+                            $this->session->set_userdata('Tsuname', $datas[0]->name);
+                            $this->session->set_userdata('Tsusergroup', $datas[0]->Group_Cd);
+                            $this->session->set_userdata('Tsdebtor_acct', $datas[0]->debtor_acct);
+                            $this->session->set_userdata('Tsdashboard', 'administrator/index/');
+                            $this->session->unset_userdata('captchaWord');
+                            $callback['Message']    = 'success';
+                        }
+                        else{
+                            $callback['Message']    = 'Wrong Password';
+                            $callback['Error']      = true;
+                        }
+                    } 
+                    else{
+                        $callback['Message']    = 'Invalid Email';
+                        $callback['Error']      = true;
+                    }
                 }
+
             }
         }
+        echo json_encode($callback);
     }
 
     public function forgot(){

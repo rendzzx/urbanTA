@@ -120,7 +120,7 @@
                                     tblmenu.ajax.reload(null,true);
                                 }
                                 else{
-                                    swal({
+                                    Swal.fire({
                                         title: "Information",
                                         animation: false,
                                         icon:"error",
@@ -131,7 +131,7 @@
                                 block(false);
                             },
                             error: function(jqXHR, textStatus, errorThrown){
-                                swal({
+                                Swal.fire({
                                     title: "Error",
                                     animation: false,
                                     type:"error",

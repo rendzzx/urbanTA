@@ -1,7 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 // header('Access-Control-Allow-Origin: *');
-ini_set('max_execution_time', 0);
-// ini_set('memory_limit','2048M');
 class Api extends Core_Controller{
     public function __construct(){
         parent::__construct();
@@ -86,18 +84,19 @@ class Api extends Core_Controller{
                 $callback['Data'] = array(
                     'attend_id'     => $dataattend[0]->attend_id,
                     'employee_id'   => $dataattend[0]->employee_id,
-                    'day'           => $dataattend[0]->day,
+                    'day'           => date_format(date_create($dataattend[0]->day), "d F Y"),
                     'name'          => $dataattend[0]->name,
-                    'hour_in'       => $dataattend[0]->hour_in,
-                    'hour_out'      => $dataattend[1]->hour_out,
-                    'latitude'      => $dataattend[0]->latitude,
-                    'longitude'     => $dataattend[0]->longitude,
-                    'ket'           => $dataattend[0]->ket,
+                    'hour_in'       => date_format(date_create($dataattend[0]->hour_in), "H:i:s"),
+                    'hour_out'      => date_format(date_create($dataattend[0]->hour_out), "H:i:s"),
+                    'latitude_in'   => $dataattend[0]->latitude_in,
+                    'longitude_in'  => $dataattend[0]->longitude_in,
+                    'latitude_out'  => $dataattend[0]->latitude_out,
+                    'longitude_out' => $dataattend[0]->longitude_out,
                 );
             }
             else{
                 $callback['Error'] = true;
-                $callback['Message'] = 'No data available';
+                $callback['Message'] = 'You have not attend today';
             }
 
             echo json_encode($callback);
@@ -120,11 +119,15 @@ class Api extends Core_Controller{
             $today = date("d M Y");
             $hour  = date("d M Y H:i:s");
 
+
             $query = "SELECT * FROM attendance_trx WHERE employee_id  = '$employee_id' AND day = '$today' ";
             $dataattend = $this->M_wsbangun->getData_by_query('IFCA', $query);
-            // var_dump($dataattend);die;
-            if (count($dataattend) == 0) {
+
+            if (count($dataattend) == 0){
+                $getid = makeID('attend_id', 'attendance_trx', 'URB');
+
                 $data = array(
+                    'attend_id'     => $getid,
                     'employee_id'   => $employee_id,
                     'day'           => $today
                 );
@@ -138,44 +141,36 @@ class Api extends Core_Controller{
                     $callback['Message'] = 'error insert hd';
                     goto forceExit;
                 }
-            }
 
-            $query = "SELECT attend_id FROM attendance_trx WHERE employee_id  = '$employee_id' AND day = '$today' ";
-            $dataattend = $this->M_wsbangun->getData_by_query('IFCA', $query);
-
-            $attend_id  = $dataattend[0]->attend_id;
-            if ($attend_id > 1) {
-                $query = "SELECT attend_id, ket FROM attendance_trx_dt WHERE attend_id  = '$attend_id' ";
-                $dataattend = $this->M_wsbangun->getData_by_query('IFCA', $query);
-
-                if (count($dataattend) == 0) {
-                    $data_in = array(
-                        'attend_id'     => $attend_id,
-                        'hour_in'       => $hour,
-                        'latitude'      => $latitude,
-                        'longitude'     => $longitude,
-                        'ket'           => 'in'
-                    );
-                    $dt_in = $this->M_wsbangun->insertData('IFCA', 'attendance_trx_dt', $data_in);
-                    if ($dt_in) {
-                        $callback['Message'] = 'Success insert dt_in';
-                        $callback['Type'] = 'IN';
-                    }
-                    else {
-                        $callback['Error'] = true;
-                        $callback['Message'] = 'error insert dt_in';
-                    }
+                $data_in = array(
+                    'attend_id'     => $getid,
+                    'hour_in'       => $hour,
+                    'latitude_in'      => $latitude,
+                    'longitude_in'     => $longitude
+                );
+                $dt_in = $this->M_wsbangun->insertData('IFCA', 'attendance_trx_dt', $data_in);
+                if ($dt_in) {
+                    $callback['Message'] = 'Success insert dt_in';
+                    $callback['Type'] = 'IN';
                 }
-                elseif (count($dataattend) == 1){
-                    
+                else {
+                    $callback['Error'] = true;
+                    $callback['Message'] = 'error insert dt_in';
+                    goto forceExit;
+                }
+            }
+            elseif (count($dataattend) == 1){
+                $sql = "SELECT hour_out as hour_out FROM attendance_trx_dt WHERE attend_id = '".$dataattend[0]->attend_id."'";
+                $dataout = $this->M_wsbangun->getData_by_query('IFCA', $sql);
+                if ($dataout[0]->hour_out == NULL) {
                     $data_out = array(
-                        'attend_id'     => $attend_id,
                         'hour_out'      => $hour,
-                        'latitude'      => $latitude,
-                        'longitude'     => $longitude,
-                        'ket'           => 'out'
+                        'latitude_out'      => $latitude,
+                        'longitude_out'     => $longitude
                     );
-                    $dt_out = $this->M_wsbangun->insertData('IFCA', 'attendance_trx_dt', $data_out);
+                    $where = array('attend_id' => $dataattend[0]->attend_id);
+
+                    $dt_out = $this->M_wsbangun->updateData('IFCA', 'attendance_trx_dt', $data_out, $where);
                     if ($dt_out) {
                         $callback['Message'] = 'Success insert dt_out';
                         $callback['Type'] = 'OUT';
@@ -190,6 +185,7 @@ class Api extends Core_Controller{
                     $callback['Message'] = 'You already attend today';
                 }
             }
+            
             forceExit:
             echo json_encode($callback);
         }
