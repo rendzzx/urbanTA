@@ -32,6 +32,75 @@
 		return $inisial.$datenow.$tmp.$number;
 	}
 
+	function makeID_api($t, $fields="", $table="", $inisial=""){
+		$CI =& get_instance();
+		$query = $CI->db->query("SELECT MAX($fields) as max from ".$table);
+		$result = current($query->result());
+
+		//set tanggal
+		$t = date_create($t);
+	   	$datenow = date_format($t, "dmy");
+			
+	    $number = 0;
+	    $imax = 6;	
+	    $tmp = "";
+	    
+	    if ($result->max !='') {
+	        $tgl = substr($result->max,3); // HAPUS INISIAL
+	        $tgl = substr($tgl,0,-4); // COUNT ANKA SETELAH TANGGAL
+
+	        if($tgl != $datenow){
+	            $number = 0;
+	        }
+	        else{
+	            $number = substr($result->max, -3);
+	        }
+	    }
+
+	    $number++;
+	    $number = strval($number);
+	    for ($i=0; $i <=($imax-strlen($inisial)-strlen($number)) ; $i++) { 
+	        $tmp = $tmp."0";
+	    }
+		return $inisial.$datenow.$tmp.$number;
+	}
+
+	function randomName() {
+	    $firstname = array( 'Johnathon', 'Anthony', 'Erasmo', 'Raleigh', 'Nancie', 'Tama', 'Camellia', 'Augustine', 'Christeen', 'Luz', 'Diego', 'Lyndia', 'Thomas', 'Georgianna', 'Leigha', 'Alejandro', 'Marquis', 'Joan', 'Stephania', 'Elroy', 'Zonia', 'Buffy', 'Sharie', 'Blythe', 'Gaylene', 'Elida', 'Randy', 'Margarete', 'Margarett', 'Dion', 'Tomi', 'Arden', 'Clora', 'Laine', 'Becki', 'Margherita', 'Bong', 'Jeanice', 'Qiana', 'Lawanda', 'Rebecka', 'Maribel', 'Tami', 'Yuri', 'Michele', 'Rubi', 'Larisa', 'Lloyd', 'Tyisha', 'Samatha',
+	    );
+
+	    $lastname = array( 'Mischke', 'Serna', 'Pingree', 'Mcnaught', 'Pepper', 'Schildgen', 'Mongold', 'Wrona', 'Geddes', 'Lanz', 'Fetzer', 'Schroeder', 'Block', 'Mayoral', 'Fleishman', 'Roberie', 'Latson', 'Lupo', 'Motsinger', 'Drews', 'Coby', 'Redner', 'Culton', 'Howe', 'Stoval', 'Michaud', 'Mote', 'Menjivar', 'Wiers', 'Paris', 'Grisby', 'Noren', 'Damron', 'Kazmierczak', 'Haslett', 'Guillemette', 'Buresh', 'Center', 'Kucera', 'Catt', 'Badon', 'Grumbles', 'Antes', 'Byron', 'Volkman', 'Klemp', 'Pekar', 'Pecora', 'Schewe', 'Ramage',
+	    );
+
+	    $name = $firstname[rand ( 0 , count($firstname) -1)];
+	    $name .= ' ';
+	    $name .= $lastname[rand ( 0 , count($lastname) -1)];
+
+	    return $name;
+	}
+
+	function randomNumber($value){
+		for ($randomNumber = mt_rand(1, 9), $i = 1; $i < $value; $i++) {
+		    $randomNumber .= mt_rand(0, 9);
+		}
+		return $randomNumber;
+	}
+
+	function countDayOfMonth(){
+		$list=array();
+	    $month = date("m");
+	    $year = date("Y");
+
+	    for($d=1; $d<=31; $d++){
+	        $time = mktime(12, 0, 0, $month, $d, $year);          
+	        if (date('m', $time) == $month)       
+	            $list[] = $d;
+	        // date('Y-m-d-D', $time);
+	    }
+
+	    return $list;
+	}
+
 	function amountinWords($num){
 		$angka = array('', 'Satu', 'Dua', 'Tiga', 'Empat', 'Lima', 'Enam', 'Tujuh', 'Delapan', 'Sembilan', 'Sepuluh', 'Sebelas');
 		$num = (float)$num;

@@ -12,11 +12,6 @@
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-wrapper-before"></div>
-            <div class="content-header row">
-                <div class="content-header-left col-md-4 col-12 mb-2">
-                    <br><br>
-                </div>
-            </div>
             <div class="content-body">
                 <div class="row">
                     <div class="col-12">
@@ -158,15 +153,18 @@
             } 
             var data = tbluser.rows(rows).data();
             var id = data[0].userID;
+            var employee_id = data[0].employee_id;
 
             var site_url = '<?php echo base_url("C_user/addnew/")?>';
 
             $('#modalheader').removeClass('bg-primary').addClass('bg-info white');
+            $('#modaldialog').addClass('modal-lg');
             $('#modaltitle').addClass('white');
             $('#modaltitle').html('Menu Edit');
             $('#modalbody').load(site_url);
 
             $('#modal').data('id', id);
+            $('#modal').data('employee_id', employee_id);
             $('#modal').modal('show');
         })
 

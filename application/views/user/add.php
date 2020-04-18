@@ -1,7 +1,10 @@
 <!-- link -->
-    <link href="<?=base_url('app-assets/vendors/css/forms/selects/select2.min.css')?>" rel="stylesheet">
-    <script src="<?=base_url('app-assets/vendors/js/forms/select/select2.full.min.js')?>"></script>
-    <script src="<?=base_url('app-assets/vendors/js/forms/validation/jquery.validate.min.js')?>"></script>
+    <link  rel="stylesheet" href="<?=base_url('app-assets/vendors/css/vendors.min.css')?>">
+    <link  rel="stylesheet" href="<?=base_url('app-assets/vendors/css/forms/selects/select2.min.css')?>">
+
+    <script type="text/javascript" src="<?=base_url('app-assets/vendors/js/forms/select/select2.full.min.js')?>"></script>
+    <script type="text/javascript" src="<?=base_url('app-assets/vendors/js/forms/validation/jquery.validate.min.js')?>"></script>
+
     <style type="text/css">
         .has-error .select2 {
           border: 1px solid #a94442;
@@ -31,7 +34,7 @@
                     <a class="nav-link" data-toggle="tab" aria-controls="tab2" href="#tab2" aria-expanded="false">Employee</a>
                 </li>
                 <li class="nav-item" id="tab3btn">
-                    <a class="nav-link" data-toggle="tab" aria-controls="tab3" href="#tab3" aria-expanded='false'>Change Password</a>
+                    <a class="nav-link" data-toggle="tab" aria-controls="tab3" href="#tab3" aria-expanded='false'>Reset Password</a>
                 </li>
             </ul>
 
@@ -42,7 +45,7 @@
                         <div class="form-group">
                             <label for="userid" class="col-xs-8">User ID</label>
                             <div class="col-xs-8">
-                                <input type="text" class="form-control" name="userid" id="userid" placeholder="User ID">
+                                <input type="text" class="form-control" name="userid" id="userid" placeholder="User ID will added automatically" readonly>
                             </div>
                         </div>
                         <div class="form-group">
@@ -54,10 +57,13 @@
                         <div class="form-group">
                             <label for="group" class="col-xs-8 control-label">Group</label>
                             <div class="col-xs-8">
-                                <input type="text" class="form-control" name="group" id="group" placeholder="Group">
+                                <select name="group" id="group" data-placeholder="Select Group..." class="select2 form-control" >
+                                    <option value="">Select Group</option>
+                                    <?= $group; ?>                
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="agent" class="col-xs-8 control-label">Agent</label>
                             <div class="col-xs-8">
                                 <input type="text" class="form-control" name="agent" id="agent" placeholder="Agent Code">
@@ -68,7 +74,7 @@
                             <div class="col-xs-8">
                                 <input type="text" class="form-control" name="debtor" id="debtor" placeholder="Debtor Account">
                             </div>
-                        </div>
+                        </div> -->
                     </div>   
                 </div>
 
@@ -77,7 +83,7 @@
                         <div class="form-group">
                             <label for="employeeid" class="col-xs-8">Employee ID</label>
                             <div class="col-xs-8">
-                                <input type="text" class="form-control" name="employeeid" id="employeeid" placeholder="Employee ID">
+                                <input type="text" class="form-control" name="employeeid" id="employeeid" placeholder="Employee ID will add automatically" readonly>
                             </div>
                         </div>
                         <div class="form-group">
@@ -95,7 +101,11 @@
                         <div class="form-group">
                             <label for="gender" class="col-xs-8">Gender</label>
                             <div class="col-xs-8">
-                                <input type="text" class="form-control" name="gender" id="gender" placeholder="Gender">
+                                <select name="gender" id="gender" class="select2 form-control" >
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -125,13 +135,19 @@
                         <div class="form-group">
                             <label for="division" class="col-xs-8">Division</label>
                             <div class="col-xs-8">
-                                <input type="text" class="form-control" name="division" id="division" placeholder="Division">
+                                <select name="division" id="division" data-placeholder="Select Division..." class="select2 form-control" >
+                                    <option value="">Select Division</option>
+                                    <?= $division; ?>                
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="postiton" class="col-xs-8">Postition</label>
+                            <label for="postition" class="col-xs-8">Postition</label>
                             <div class="col-xs-8">
-                                <input type="text" class="form-control" name="postiton" id="postiton" placeholder="Postition">
+                                <select name="postition" id="postition" data-placeholder="Select Postition..." class="select2 form-control" >
+                                    <option value="">Select Postition</option>
+                                    <?= $postition; ?>                
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -146,15 +162,11 @@
                 <div role="tabpanel" class="tab-pane" id="tab3" aria-expanded="true" aria-lebelledby="tab3">
                     <div class="box-body">
                         <div class="form-group">
-                            <label for="password" class="col-xs-8 control-label">Password</label>
-                            <div class="col-xs-8">
-                                <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="password2" class="col-xs-8 control-label">Password</label>
-                            <div class="col-xs-8">
-                                <input type="password" class="form-control" name="password2" id="password2" placeholder="Confrim Password">
+                            <div class="col">
+                                <p>Reset Password for this account : <strong id="idakun"></strong> - <strong id="namaakun"></strong></p>
+                                <p style="color:red;">password will be set to : <strong>pass1234</strong></p>
+                                <br><br><br>
+                                <button class="btn btn-danger col-12" id="resetpass">Reset Password</button>
                             </div>
                         </div>
                     </div>
@@ -170,6 +182,7 @@
         
         $(document).ready(function () {
             loaddata();
+
             $('#savefrm').click(function(event){
                 event.preventDefault();
                 if (event.handled !== true) {
@@ -192,10 +205,10 @@
                                         confirmButtonText: "OK"
                                     });
                                     $('#modal').modal('hide');
-                                    tblgroup.ajax.reload(null,true);
+                                    tbluser.ajax.reload(null,true);
                                 }
                                 else{
-                                    swal({
+                                    Swal.fire({
                                         title: "Information",
                                         animation: false,
                                         icon:"error",
@@ -206,7 +219,60 @@
                                 block(false);
                             },
                             error: function(jqXHR, textStatus, errorThrown){
-                                swal({
+                                Swal.fire({
+                                    title: "Error",
+                                    animation: false,
+                                    type:"error",
+                                    text: textStatus+' Save : '+errorThrown,
+                                    confirmButtonText: "OK"
+                                });
+                                block(false);
+                            }
+                        });
+                    }
+                    else{
+                        block(false);
+                    }
+                }
+            });
+
+            $('#resetpass').click(function(event){
+                event.preventDefault();
+                if (event.handled !== true) {
+                    event.handled = true;
+                    if ($('#frmEditor').valid()) {
+                        block(true);
+                        var datafrm = $('#frmEditor').serializeArray();
+                        $.ajax({
+                            url : "<?php echo base_url('C_user/resetpass');?>",
+                            type:"POST",
+                            data: datafrm,
+                            dataType:"json",
+                            success:function(event, data){
+                                if (event.Error == false) {
+                                    Swal.fire({
+                                        title: "Information",
+                                        animation: true,
+                                        icon:"success",
+                                        text: event.Message,
+                                        confirmButtonText: "OK"
+                                    });
+                                    $('#modal').modal('hide');
+                                    tbluser.ajax.reload(null,true);
+                                }
+                                else{
+                                    Swal.fire({
+                                        title: "Information",
+                                        animation: false,
+                                        icon:"error",
+                                        text: event.Message,
+                                        confirmButtonText: "OK"
+                                    });
+                                }
+                                block(false);
+                            },
+                            error: function(jqXHR, textStatus, errorThrown){
+                                Swal.fire({
                                     title: "Error",
                                     animation: false,
                                     type:"error",
@@ -225,13 +291,50 @@
 
             $("#frmEditor").validate({
                 rules: {
-                    txtGroupCD: {
+                    email: {
                         required: true,
-                        maxlength:10
+                        email:true
                     },
-                    txtGroupDescs:{
+                    group:{
+                        required:true,
+                    },
+                    name:{
                         required:true
-                    }, 
+                    },
+                    address:{
+                        required:true
+                    },
+                    gender:{
+                        required:true,
+                    },
+                    handphone:{
+                        required:true,
+                        number:true
+                    },
+                    nik:{
+                        required:true,
+                        number:true
+                    },
+                    npwp:{
+                        number:true
+                    },
+                    bankacc:{
+                        number:true
+                    },
+                    division:{
+                        required:true
+                    },
+                    postition:{
+                        required:true
+                    },
+                    salary:{
+                        required:true,
+                        number:true,
+                        min:1000000
+                    }
+                },
+                message:{
+                    
                 },
                 errorElement: "span",
                 highlight: function (element, errorClass, validClass) {
@@ -246,7 +349,7 @@
                     if (element.parent('.input-group').length) {
                         error.insertAfter(element.parent());
                     } 
-                    else if (element.hasClass('select2_demo_1') || element.hasClass('checkbox-inline') || element.hasClass('radio-inline')){
+                    else if (element.hasClass('select2') || element.hasClass('checkbox-inline') || element.hasClass('radio-inline')){
                         error.insertAfter(element.next('span'));
                     } else {
                         error.insertAfter(element);
@@ -257,18 +360,21 @@
         
         function loaddata(){
             var id = $('#modal').data('id');
-            if (id) {
+            if (id != '' && id != 0) {
                 // console.log(id)
                 $.getJSON("<?php echo base_url('C_user/getByID');?>" + "/" + id, function (data) {
                     // user
+                        $('#email').attr('readonly', 'true');
+                        $('#idakun').html(data[0].userID);
+                        $('#namaakun').html(data[0].name);
+                        // $('#agent').attr('disabled', 'true');
+                        // $('#debtor').attr('disabled', 'true');
+
                         $('#userid').val(data[0].userID);
-                        $('#userid').attr('disabled', 'true');
                         $('#email').val(data[0].email);
-                        // $('#password').val(data[0].password);
-                        // $('#password2').val(data[0].password);
-                        $('#group').val(data[0].Group_Cd);
-                        $('#agent').val(data[0].agent_cd);
-                        $('#debtor').val(data[0].debtor_acct);
+                        $('#group').val(data[0].Group_Cd).trigger('change');
+                        // $('#agent').val(data[0].agent_cd);
+                        // $('#debtor').val(data[0].debtor_acct);
                     //employee
                         $('#employeeid').val(data[0].employee_id);
                         $('#name').val(data[0].name);
@@ -278,8 +384,8 @@
                         $('#nik').val(data[0].nik);
                         $('#npwp').val(data[0].npwp);
                         $('#bankacc').val(data[0].bank_acct);
-                        $('#division').val(data[0].division_name);
-                        $('#postiton').val(data[0].postition_name);
+                        $('#division').val(data[0].division_cd).trigger('change');
+                        $('#postition').val(data[0].postition_cd).trigger('change');
                         $('#salary').val(data[0].base_salary);
 
                 });

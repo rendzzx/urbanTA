@@ -102,7 +102,6 @@ class Administrator extends Core_Controller{
         $this->session->set_userdata('choosengroup', $choosengroup);
         $this->session->set_userdata('appsname', $appsname);
         $this->session->set_userdata('urlmodule', $url);
-        $this->session->set_userdata('margin', $margin);
         redirect($url);
     }
    

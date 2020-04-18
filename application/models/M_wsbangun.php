@@ -66,6 +66,22 @@ class M_wsbangun extends Core_Model {
                 }
             }
         }
+
+        public function insertData_batch($con='',$table="", $data=null){
+            $this->load->database();
+            $db2 = $this->load->database($con, TRUE);
+            if($data != null) {
+                $ins = $db2->insert_batch($table, $data);
+                if(!$ins) {
+                    $msg = $db2->error();
+                    $msg = $msg["message"];
+                } else {
+                    $msg = 'OK';
+                }
+                $db2->close();
+            }
+            return $msg;
+        }    
     // ========================== INSERT DATA
 
     // ========================== UPDATE DATA

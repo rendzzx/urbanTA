@@ -23,7 +23,6 @@
             <div class="content-wrapper-before" style="height: 150px !Important"></div>
             <div class="content-header row">
                 <div class="content-header-left col-md-4 col-12 mb-2">
-                    <br><br>
                     <h3 class="content-header-title">Assign Menu Entry</h3>
                 </div>
                 <div class="content-header-right col-md-8 col-12 mb-2">
@@ -143,6 +142,7 @@
                 },
                 "type":"post"
             },
+            "order": [[ 2, "asc" ]],
             "columns": [
                 {data:"MenuID"},
                 {data:"Title",
@@ -154,15 +154,7 @@
                 {data:"descs"},
                 {data:"MenuID",
                     render: function(data, type, row){
-                        switch(data) {
-                            case 2:                            
-                            // case 3:
-                            // // console.log(data);
-                            // return '<input type="checkbox" id="cb_' + data + '" name="cb_' + data + '" onclick="cbclick('+data+')" disabled/>';
-                            default:
-                                 return '<input type="checkbox" id="cb_' + data + '" name="cb_' + data + '" onclick="cbclick('+data+')"/>';
-                        }                    
-                        // return '<input type="checkbox" id="cb_' + data + '" name="cb_' + data + '" onclick="cbclick('+data+')"/>';
+                         return '<input type="checkbox" id="cb_' + data + '" name="cb_' + data + '" onclick="cbclick('+data+')"/>';
                     }
                 }
             ],

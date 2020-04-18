@@ -32,7 +32,53 @@ class C_user extends Core_Controller {
     }
       
     public function addnew(){
-        $this->load->view('user/add');
+        $division   = $this->zoom_division();
+        $postition  = $this->zoom_postition();
+        $group      = $this->zoom_group();
+
+        $content = array(
+            'division'  => $division,
+            'postition' => $postition,
+            'group'     => $group
+        );
+
+        $this->load->view('user/add', $content);
+    }
+
+    public function zoom_division(){
+        $division = $this->M_wsbangun->getData('IFCA','division');
+        $res[] = '';
+        if(!empty($division)) {
+            foreach ($division as $values) {
+                $res[] = '<option value="'.$values->division_cd.'">'.$values->division_name.'</option>';
+            }
+            $res = implode("", $res);
+        }
+        return $res;
+    }
+
+    public function zoom_postition(){
+        $postition = $this->M_wsbangun->getData('IFCA','postition');
+        $res[] = '';
+        if(!empty($postition)) {
+            foreach ($postition as $values) {
+                $res[] = '<option value="'.$values->postition_cd.'">'.$values->postition_name.'</option>';
+            }
+            $res = implode("", $res);
+        }
+        return $res;
+    }
+
+    public function zoom_group(){
+        $group = $this->M_wsbangun->getData('IFCA','sysGroup');
+        $res[] = '';
+        if(!empty($group)) {
+            foreach ($group as $values) {
+                $res[] = '<option value="'.$values->group_cd.'">'.$values->group_cd.' - '.$values->group_descs.'</option>';
+            }
+            $res = implode("", $res);
+        }
+        return $res;
     }
 
     public function getByID($id=''){
@@ -47,82 +93,134 @@ class C_user extends Core_Controller {
             'Message' => null,
             'Error' => false
         );
+
         if ($_POST){
-            $userid = $this->input->post('userid', true);
-            $email = $this->input->post('email', true);
-            $group = $this->input->post('group', true);
-            $agent = $this->input->post('agent', true);
-            $debtor = $this->input->post('debtor', true);
+            // DATA POST
+                $userid = $this->input->post('userid', true);
+                $employeeid = $this->input->post('employeeid', true);
 
-            $employeeid = $this->input->post('employeeid', true);
-            $name = $this->input->post('name', true);
-            $address = $this->input->post('address', true);
-            $gender = $this->input->post('gender', true);
-            $handphone = $this->input->post('handphone', true);
-            $nik = $this->input->post('nik', true);
-            $npwp = $this->input->post('npwp', true);
-            $bankacc = $this->input->post('bankacc', true);
-            $division = $this->input->post('division', true);
-            $postition = $this->input->post('postition', true);
-            $salary = $this->input->post('salary', true);
-            
-            $password = $this->input->post('password', true);
+                $email = $this->input->post('email', true);
+                $group = $this->input->post('group', true);
+                // $agent = $this->input->post('agent', true);
+                // $debtor = $this->input->post('debtor', true);
 
-            $datauser = array(          
-                'userID' 		=> $userid,
-                'email' 		=> $email,
-                'name'			=> $name,
-                'Group_Cd' 		=> $group,
-                'agent_cd'		=> $agent,
-                'debtor_acct'	=> $debtor
-            );
-            $where = array('userID' => $userid);
+                $name = $this->input->post('name', true);
+                $address = $this->input->post('address', true);
+                $gender = $this->input->post('gender', true);
+                $handphone = $this->input->post('handphone', true);
+                $nik = $this->input->post('nik', true);
+                $npwp = $this->input->post('npwp', true);
+                $bankacc = $this->input->post('bankacc', true);
+                $division = $this->input->post('division', true);
+                $postition = $this->input->post('postition', true);
+                $base_salary = $this->input->post('salary', true);
+            // DATA POST
 
-            $dataemp = array(
-            	'userID' 		=> $userid,
-            	'employee_id' 	=> $employeeid,
-            	'name' 			=> $name,
-            	'address' 		=> $address,
-            	'gender' 		=> $gender,
-            	'handphone' 	=> $handphone,
-            	'nik' 			=> $nik,
-            	'npwp' 			=> $npwp,
-            	'bank_acct' 	=> $bankacc,
-            	'division_cd' 	=> $division,
-            	'postition_cd' 	=> $postition,
-            	'base_salary' 	=> $base_salary,
-            );
+            if (empty($userid)) {
+                $makeuserid = makeID('userID', 'sysuser', 'USR');
+                $makeempid  = makeID('employee_id', 'employee', 'EMP');
+                $COM        = strtoupper(md5(strtoupper(md5($email)). "P@ssw0rd" .strtoupper(md5('pass1234'))));
 
-            $datapass = array(
-            	'password' 	=> $password,
-            	'COM'		=> $password
-            );
-            
-            if($GroupID>0) {
-                $data = $this->M_wsbangun->updateData('IFCA', 'sysgroup',$data, $criteria);
-                if($data){
-                    $callback['Message'] ="Data has been updated successfully";
+                $datauser = array(
+                    'userID'        => $makeuserid,
+                    'email'         => $email,
+                    'name'          => $name,
+                    'Group_Cd'      => $group,
+                    'password'      => $COM,
+                    'COM'           => $COM
+                );
+
+                $dataemp = array(
+                	'userID' 		=> $makeuserid,
+                	'employee_id' 	=> $makeempid,
+                	'name' 			=> $name,
+                	'address' 		=> $address,
+                	'gender' 		=> $gender,
+                	'handphone' 	=> $handphone,
+                	'nik' 			=> $nik,
+                	'npwp' 			=> $npwp,
+                	'bank_acct' 	=> $bankacc,
+                	'division_cd' 	=> $division,
+                	'postition_cd' 	=> $postition,
+                	'base_salary' 	=> $base_salary,
+                );
+
+                $insertuser = $this->M_wsbangun->insertData('IFCA', 'sysUser', $datauser);
+                $insertemp = $this->M_wsbangun->insertData('IFCA', 'employee', $dataemp);
+                if ($insertuser && $insertemp) {
+                    $callback['Message'] = "User registration Successful";
                 }
                 else{
-                    $callback['Message'] = $data;
                     $callback['Error'] = true;
+                    $callback['Message'] = "User registration failed";
                 }
             }
             else{
-                $data = $this->M_wsbangun->insertData('IFCA', 'sysgroup',$data);
-                if($data){
-                    $callback['Message'] = "Data has been saved successfully";
-                }
-                else{
-                    $callback['Message'] = $data;
-                    $callback['Error'] = true;
-                }  
+                $datauser = array(
+                    'name'          => $name,
+                    'Group_Cd'      => $group
+                );
+
+                $dataemp = array(
+                    'name'          => $name,
+                    'address'       => $address,
+                    'gender'        => $gender,
+                    'handphone'     => $handphone,
+                    'nik'           => $nik,
+                    'npwp'          => $npwp,
+                    'bank_acct'     => $bankacc,
+                    'division_cd'   => $division,
+                    'postition_cd'  => $postition,
+                    'base_salary'   => $base_salary,
+                );
+                    
+                $where = array('userID' => $userid);
+                var_dump('update');die;
             }
         } //tutup post
         else{
             $callback['Error'] = true;
             $callback['Message'] = "Data validation is not valid";
         }   
+        echo json_encode($callback);
+    }
+
+    public function resetpass(){
+        $callback = array(
+            'Data' => null,
+            'Message' => null,
+            'Error' => false
+        );
+
+        if ($_POST) {
+            $userid = $this->input->post('userid', TRUE);
+            $email  = $this->input->post('email', true);
+            if (!empty($userid) && !empty($email)) {
+                $COM = strtoupper(md5(strtoupper(md5($email)). "P@ssw0rd" .strtoupper(md5('pass1234'))));
+                $data = array(
+                    'password'  => $COM,
+                    'COM'       => $COM
+                );
+                $where = array('userID'=>$userid);
+                $update = $this->M_wsbangun->updateData('IFCA', 'sysUser', $data, $where);
+                if ($update) {
+                    $callback['Message'] = 'Reset Password Successful';
+                }
+                else{
+                    $callback['Error'] = true;
+                    $callback['Message'] = 'Reset Falied';
+                }
+            }
+            else{
+                $callback['Error'] = true;
+                $callback['Message'] = 'Invalid Data';
+            }
+        }
+        else{
+            $callback['Error'] = true;
+            $callback['Message'] = 'Invalid Data';
+        }
+
         echo json_encode($callback);
     }
 
@@ -134,14 +232,22 @@ class C_user extends Core_Controller {
         );
         if ($_POST) {
             $id = $this->input->post("id",true);
-            $where = array('GroupID'=>$id);
 
-            $del = $this->M_wsbangun->deleteData('IFCA', 'sysgroup', $where);
-            if ($del) {
-                $callback['Message'] = "Data has been deleted successfully";
+            $where = array('userID'=>$id);
+
+            $delemp = $this->M_wsbangun->deleteData('IFCA', 'employee', $where);
+            if ($delemp) {
+                $deluse = $this->M_wsbangun->deleteData('IFCA', 'sysuser', $where);
+                if ($deluse) {
+                    $callback['Message'] = "Data has been deleted successfully";
+                }
+                else{
+                    $callback['Message'] = $deluse;
+                    $callback['Error'] = true;
+                }
             }
             else {
-                $callback['Message'] = $del;
+                $callback['Message'] = $delemp;
                 $callback['Error'] = true;
             }
         }

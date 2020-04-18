@@ -16,10 +16,8 @@
 | environments.
 |
 */
-// $config['teknisi_url'] = 'http://'.$_SERVER['SERVER_NAME'].'/teknisi/';
-//$config['base_url'] = 'http://'.$_SERVER['SERVER_NAME'].'/urban/';
 $config['base_url'] = "http://".$_SERVER['HTTP_HOST'].str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
-// $config['secure_base_url'] = 'https://'.$_SERVER['SERVER_NAME'].'/IFCAportal/';
+
 $config['per_page']	= 5;
 $config['per_page_articel']	= 5;
 $config['currency']	= 'Rp. ';

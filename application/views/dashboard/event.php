@@ -39,7 +39,7 @@
             <div class="content-wrapper-before"></div>
             <div class="content-header row">
                 <div class="content-header-left col-md-4 col-12 mb-2">
-                    <h2 class="content-header-title">Report</h2>
+                    <h2 class="content-header-title">Dashboard</h2>
                 </div>
             </div>
             <div class="content-body">
@@ -47,7 +47,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Employee</h4>
+                                <h4 class="card-title">Event</h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
@@ -58,76 +58,79 @@
                             </div>
                             <div class="card-content collapse show">
                                 <div class="card-body card-dashboard">
-                                    <!-- total employee -->
                                     <div class="row">
-
-                                        <div class="col-xl-4 col-lg-6 col-md-12">
-                                            <div class="card" id="card-totaluser">
-                                                <div class="card-content">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <h4 class="card-title">Total Employee</h4>
-                                                                <div id="totaluser" class="height-150 donutShadow">
-                                                                    <strong style="font-size: 30px;">
-                                                                        <?= $totaluser; ?>
-                                                                    </strong>
+                                        <!-- total event -->
+                                            <div class="col-xl-4 col-lg-6 col-md-12">
+                                                <div class="card" id="card-totaluser">
+                                                    <div class="card-content">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <h4 class="card-title">Total Event</h4>
+                                                                    <div id="totaluser" class="height-150 donutShadow">
+                                                                        <strong style="font-size: 30px;">
+                                                                            <?= $totalevent; ?>
+                                                                        </strong>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col text-right">
-                                                                <i class="la la-user" style="font-size: 130px;"></i>
+                                                                <div class="col text-right">
+                                                                    <i class="la la-user" style="font-size: 130px;"></i>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="col-xl-4 col-lg-6 col-md-12">
-                                            <div class="card" id="card-userattend">
-                                                <div class="card-content">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <h4 class="card-title">Total employee attended</h4>
-                                                                <div id="userattend" class="height-150 donutShadow">
-                                                                    <strong style="font-size: 30px;">
-                                                                        <?= $userAttend; ?>
-                                                                    </strong>
+                                        <!-- total event -->
+                                        
+                                        <!-- total soon -->
+                                            <div class="col-xl-4 col-lg-6 col-md-12">
+                                                <div class="card" id="card-userattend">
+                                                    <div class="card-content">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <h4 class="card-title">Comingsoon Event</h4>
+                                                                    <div id="userattend" class="height-150 donutShadow">
+                                                                        <strong style="font-size: 30px;">
+                                                                            <?= $totalsoon; ?>
+                                                                        </strong>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col text-right">
-                                                                <i class="la la-user-plus" style="font-size: 130px;"></i>
+                                                                <div class="col text-right">
+                                                                    <i class="la la-user-plus" style="font-size: 130px;"></i>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="col-xl-4 col-lg-6 col-md-12">
-                                            <div class="card" id="card-notattend">
-                                                <div class="card-content">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <h4 class="card-title">Employee not attended</h4>
-                                                                <div id="usernotattend" class="height-150 donutShadow">
-                                                                    <strong style="font-size: 30px;">
-                                                                        <?= $notAttend; ?>
-                                                                    </strong>
+                                        <!-- total soon -->
+                                        
+                                        <!-- total cancle -->
+                                            <div class="col-xl-4 col-lg-6 col-md-12">
+                                                <div class="card" id="card-notattend">
+                                                    <div class="card-content">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <h4 class="card-title">Canceled Event</h4>
+                                                                    <div id="usernotattend" class="height-150 donutShadow">
+                                                                        <strong style="font-size: 30px;">
+                                                                            <?= $totalcancle; ?>
+                                                                        </strong>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col text-right">
-                                                                <i class="la la-user-times" style="font-size: 130px;"></i>
+                                                                <div class="col text-right">
+                                                                    <i class="la la-user-times" style="font-size: 130px;"></i>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        <!-- total cancle -->
                                     </div>
-                                    <!-- total employee -->
                                 </div>
                             </div>
                         </div>
@@ -136,7 +139,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Employee Attend Today</h4>
+                                <h4 class="card-title">Attend Per Event</h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
@@ -148,7 +151,7 @@
                             <div class="card-content collapse show">
                                 <div class="card-body chartjs">
                                     <div class="height-500">
-                                        <canvas id="attendperday"></canvas>
+                                        <canvas id="attendperevent"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +166,7 @@
 <!-- js -->
     <script type="text/javascript">
         $(window).on("load", function(){
-            var ctx = $("#attendperday");
+            var ctx = $("#attendperevent");
             var chartOptions = {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -182,7 +185,7 @@
                         },
                         scaleLabel: {
                             display: true,
-                            labelString: 'Day Of Month'
+                            labelString: 'Event'
                         }
                     }],
                     yAxes: [{
@@ -193,13 +196,13 @@
                         },
                         scaleLabel: {
                             display: true,
-                            labelString: 'User Attended'
+                            labelString: 'Attended'
                         }
                     }]
                 },
                 title: {
                     display: true,
-                    text: 'User Attend per Day'
+                    text: 'User Attend per Event'
                 }
             };
             var chartData = {
@@ -207,7 +210,7 @@
                 datasets: [
                     {
                         label: "This Month",
-                        data: <?= json_encode($reportmo); ?>,
+                        data: [1,2,3,4,5,5,6,7,8,5,3,4,5,4,3,2,4,4,3,2,34,5,54,32],
                         fill: false,
                         borderDash: [5, 5],
                         borderColor: "#9C27B0",

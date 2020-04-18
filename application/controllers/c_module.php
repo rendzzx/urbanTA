@@ -63,8 +63,6 @@ class C_Module extends Core_Controller{
                 $buttonclass = $this->input->post('buttonclass',TRUE);
                 $orderseq = $this->input->post('orderseq',TRUE);
                 $status = intval($this->input->post('status',TRUE));
-                $audit_date = date('d M Y H:i:s');
-                $audit_user = $this->session->userdata('Tsuname');
 
                 if(empty($rowID)){
                     $rowID = 0;
@@ -80,8 +78,6 @@ class C_Module extends Core_Controller{
                     'ButtonClass' => $buttonclass,
                     'OrderSeq' => $orderseq,
                     'status' => $status,
-                    'audit_user'=>$audit_user,
-                    'audit_date'=>$audit_date
                 );
                 $criteria = array('rowID' => $rowID);
 

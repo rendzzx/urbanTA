@@ -6,7 +6,7 @@
     <script type="text/javascript" src="<?=base_url('app-assets/vendors/js/tables/datatable/datatables.min.js')?>"></script>
     <script type="text/javascript" src="<?=base_url('app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js')?>"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@9.10.10/dist/sweetalert2.min.js"></script>
-    <script type="text/javascript" src="<?=base_url('app-assets/vendors/js/charts/chart.min.js')?>"></script>
+    <script type="text/javascript" src="<?= base_url('app-assets/vendors/js/charts/Chart.bundle.min.js')?>"></script>
 
     <style>
         #card-totaluser{
@@ -37,17 +37,12 @@
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-wrapper-before"></div>
-            <div class="content-header row">
-                <div class="content-header-left col-md-4 col-12 mb-2">
-                    <h2 class="content-header-title">Report</h2>
-                </div>
-            </div>
             <div class="content-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Employee</h4>
+                                <h4 class="card-title">Dashboard</h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
@@ -146,9 +141,25 @@
                                 </div>
                             </div>
                             <div class="card-content collapse show">
-                                <div class="card-body chartjs">
-                                    <div class="height-500">
-                                        <canvas id="attendperday"></canvas>
+                                <div class="card-body card-dashboard">
+                                    <div class="row">
+                                        <div class="table-responsive">
+                                            <table id="tblattend" class="table table-striped table-bordered table-hover dataTables" cellspacing="0" width="100%">
+                                                <thead>            
+                                                    <th class="sorting_asc">No.</th>
+                                                    <th>Attend Id</th>
+                                                    <th>Employee Id</th>
+                                                    <th>Employee</th>
+                                                    <th>Day</th>
+                                                    <th>Hour IN</th>
+                                                    <th>Hour OUT</th>
+                                                    <th>Location IN</th>
+                                                    <th>Location OUT</th>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -162,69 +173,69 @@
 
 <!-- js -->
     <script type="text/javascript">
-        $(window).on("load", function(){
-            var ctx = $("#attendperday");
-            var chartOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend: {
-                    position: 'bottom',
-                },
-                hover: {
-                    mode: 'label'
-                },
-                scales: {
-                    xAxes: [{
-                        display: true,
-                        gridLines: {
-                            color: "#f3f3f3",
-                            drawTicks: false,
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Day Of Month'
-                        }
-                    }],
-                    yAxes: [{
-                        display: true,
-                        gridLines: {
-                            color: "#f3f3f3",
-                            drawTicks: false,
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'User Attended'
-                        }
-                    }]
-                },
-                title: {
-                    display: true,
-                    text: 'User Attend per Day'
-                }
-            };
-            var chartData = {
-                labels: <?= json_encode(countDayOfMonth()); ?>,
-                datasets: [
-                    {
-                        label: "This Month",
-                        data: <?= json_encode($reportmo); ?>,
-                        fill: false,
-                        borderDash: [5, 5],
-                        borderColor: "#9C27B0",
-                        pointBorderColor: "#9C27B0",
-                        pointBackgroundColor: "#FFF",
-                        pointBorderWidth: 2,
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 4,
+        var tblattend = $('#tblattend').DataTable( {
+            "responsive":true,
+            "ajax" : {
+                "url" : "<?php echo base_url('C_attandance/getAttend');?>",
+                "dataSrc": "",
+                "type": "POST"
+            },
+            "columns": [
+                {data:'attend_id'},
+                {data:'attend_id'},
+                {data:'employee_id'},
+                {data:'name'},
+                {data:'day',
+                    render: function (data) {
+                        var monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
+                        var date = new Date(data);
+                        // return data;
+                        var d = date.getDate();
+                        var m = monthNames[date.getMonth()];
+                        var y = date.getFullYear();
+                        return d +' '+ m +' '+ y;
                     }
-                ]
-            };
-            var config = {
-                type: 'line',
-                options : chartOptions,
-                data : chartData
-            };
-            var lineChart = new Chart(ctx, config);
+                },
+                {data:"hour_in",
+                    render: function (data) {
+                        var date = new Date(data);
+                        var hr = date.getHours();
+                        var mi = date.getMinutes();
+                        var se = date.getSeconds();
+                        return hr +':'+ mi +':'+ se;
+                    }
+                },
+                {data:"hour_out",
+                    render: function (data) {
+                        var date = new Date(data);
+                        var hr = date.getHours();
+                        var mi = date.getMinutes();
+                        var se = date.getSeconds();
+                        return hr +':'+ mi +':'+ se;
+                    }
+                },
+                {data:"latitude_in",
+                    render: function (data,type,row) {
+                        return 'Lat : '+row.latitude_in +' Lon : '+ row.longitude_in;
+                    }
+                },
+                {data:"latitude_out",
+                    render: function (data,type,row) {
+                        return 'Lat : '+row.latitude_out +' Lon : '+ row.longitude_out;
+                    }
+                }
+            ],
+            "language": {
+                "decimal": ",",
+                "thousands": ".",
+            },
+            "dom": '<"toolbar group">rtip'
         });
+
+        tblattend.on( 'order.dt search.dt', function () {
+            tblattend.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                cell.innerHTML = i+1;
+            } );
+        } ).draw();
     </script>
 <!-- js -->

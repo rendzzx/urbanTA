@@ -59,9 +59,9 @@ class Auth extends Core_Controller{
                     if($datas){
                         if($COM == strtoupper($datas[0]->COM)){
                             $this->session->set_userdata('is_Staff_logged', true);
-                            $this->session->set_userdata('Tsname', $datas[0]->userID);
+                            $this->session->set_userdata('Tsuname', $datas[0]->userID);
                             $this->session->set_userdata('Tsemail', $datas[0]->email);
-                            $this->session->set_userdata('Tsuname', $datas[0]->name);
+                            $this->session->set_userdata('Tsname', $datas[0]->name);
                             $this->session->set_userdata('Tsusergroup', $datas[0]->Group_Cd);
                             $this->session->set_userdata('Tsdebtor_acct', $datas[0]->debtor_acct);
                             $this->session->set_userdata('Tsdashboard', 'administrator/index/');
@@ -115,8 +115,8 @@ class Auth extends Core_Controller{
     public function setCaptcha(){
         $rand_number = rand(1000,9999);
         $va = array(
-            'img_path'=>'./app-assets/images/static/',
-            'img_url'=>base_url().'app-assets/images/static/',
+            'img_path'=>'./app-assets/images/captcha/',
+            'img_url'=>base_url().'app-assets/images/captcha/',
             'font_size'=>60,
             'font_path'=>FCPATH. 'dist/captcha4.ttf',
             'word'=>$rand_number,

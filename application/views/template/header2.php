@@ -14,6 +14,8 @@
         <link href="https://fonts.googleapis.com/css?family=Muli:300,300i,400,400i,600,600i,700,700i%7CComfortaa:300,400,700" rel="stylesheet">
         <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css" rel="stylesheet">
         
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5m2mfHIIB1Zu8nYFJRbwdYuNlsnO3A5w&callback=initMap"async defer></script>
+
         <!-- BEGIN Vendor CSS-->
             <link rel="stylesheet" type="text/css" href="<?=base_url('app-assets/vendors/css/vendors.min.css')?>">
         <!-- END: Vendor CSS-->
@@ -34,10 +36,9 @@
         <!-- BEGIN: Page CSS-->
             <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/core/menu/menu-types/horizontal-menu.css')?>">
             <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/core/colors/palette-gradient.css')?>">
-            <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/core/colors/palette-gradient.css')?>">
             <link rel="stylesheet" type="text/css" href="<?= base_url('app-assets/css/pages/chat-application.css')?>">
         <!-- END: Page CSS-->
-
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
             <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.7/js/min/perfect-scrollbar.jquery.min.js"></script>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.7/css/perfect-scrollbar.min.css" />
 
@@ -163,6 +164,30 @@
             $('#modal').modal('show');
             $('.modal-footer').hide();
         }
+
+        function initMap() {
+            var myLatlng = {lat: -6.23254782469231, lng: 106.85078593610478};
+            var map = new google.maps.Map(
+            document.getElementById('map'), {zoom: 10, center: myLatlng});
+
+            // Create the initial InfoWindow.
+            var infoWindow = new google.maps.InfoWindow({
+                content: 'Click the map to get Lat/Lng!',
+                position: myLatlng
+            });
+            infoWindow.open(map);
+          
+            // Configure the click listener.
+            map.addListener('click', function(mapsMouseEvent) {
+                // Close the current InfoWindow.
+                infoWindow.close();
+    
+                // Create a new InfoWindow.
+                infoWindow = new google.maps.InfoWindow({position: mapsMouseEvent.latLng});
+                infoWindow.setContent(mapsMouseEvent.latLng.toString());
+                infoWindow.open(map);
+            });
+        }
     </script>
 <!-- link -->
 
@@ -259,25 +284,17 @@
                         if(empty($choosengroup)){
                             $choosengroup = 'ADMINWEB';
                         }
-                        if($usergroup=='ADMINWEB'){
+                        // if($usergroup=='ADMINWEB'){
+                        //     var_dump('expression');
                             echo $this->dynamic_menu->build_menu($path, $choosengroup);
-                        }
-                        else{
-                            echo $this->dynamic_menu->build_menu($path, $usergroup);
-                        }
+                        // }
+                        // else{
+                        //     var_dump('expressiona');
+                        //     echo $this->dynamic_menu->build_menu($path, $usergroup);
+                        // }
                     ?>
                 </ul>
             </div>
-
-            <!-- floating chat -->
-            <!-- <a href="" onclick="openchat()">
-                <div id="container-floating">
-                    <div id="floating-button" data-toggle="tooltip" data-placement="left" data-original-title="Create">
-                        <p class="plus">+</p>
-                        <img class="edit" src="https://ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/1x/bt_compose2_1x.png">
-                    </div>
-                </div>
-            </a> -->
         </div>
         
         <!-- MODAL -->

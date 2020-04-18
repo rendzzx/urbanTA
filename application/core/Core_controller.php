@@ -48,7 +48,6 @@ class Core_controller extends CI_Controller{
     public function load_content_top_menu($view = "", $content = null){
         $projectNo = $this->session->userdata('Tsproject');
         $usergroup = $this->session->userdata('Tsusergroup');
-        $entity = $this->session->userdata('Tsentity');
         $projectn = $this->session->userdata('Tsprojectname') ;
         $user_email = $this->session->userdata('Tsemail');
         

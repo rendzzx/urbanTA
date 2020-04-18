@@ -13,17 +13,12 @@
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-wrapper-before"></div>
-            <div class="content-header row">
-                <div class="content-header-left col-md-4 col-12 mb-2">
-                    <br><br>
-                </div>
-            </div>
             <div class="content-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Group Entry</h4>
+                                <h4 class="card-title">Module Assign</h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">

@@ -13,11 +13,6 @@
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-wrapper-before"></div>
-            <div class="content-header row">
-                <div class="content-header-left col-md-4 col-12 mb-2">
-                    <br><br>
-                </div>
-            </div>
             <div class="content-body">
                 <div class="row">
                     <div class="col-12">
@@ -69,6 +64,7 @@
                 "dataSrc": "",
                 "type": "POST"
             },
+            "order": [[ 3, "asc" ],[ 6, "asc" ]],
             "columns": [
                 {data:"MenuID"},
                 {data:"MenuID"},

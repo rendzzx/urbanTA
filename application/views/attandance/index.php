@@ -12,17 +12,12 @@
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-wrapper-before"></div>
-            <div class="content-header row">
-                <div class="content-header-left col-md-4 col-12 mb-2">
-                    <br><br>
-                </div>
-            </div>
             <div class="content-body">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Attendance</h4>
+                                <h4 class="card-title">Attendance This Month</h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
@@ -38,11 +33,12 @@
                                             <thead>            
                                                 <th class="sorting_asc">No.</th>
                                                 <th>Attend Id</th>
+                                                <th>Employee Id</th>
                                                 <th>Employee</th>
                                                 <th>Day</th>
                                                 <th>Hour IN</th>
-                                                <th>Hour OUT</th>
                                                 <th>Location IN</th>
+                                                <th>Hour OUT</th>
                                                 <th>Location OUT</th>
                                             </thead>
                                             <tbody>
@@ -71,15 +67,17 @@
             "columns": [
                 {data:'attend_id'},
                 {data:'attend_id'},
+                {data:'employee_id'},
                 {data:'name'},
                 {data:'day',
                     render: function (data) {
+                        var monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
                         var date = new Date(data);
                         // return data;
                         var d = date.getDate();
-                        var m = date.getMonth();
+                        var m = monthNames[date.getMonth()];
                         var y = date.getFullYear();
-                        return d +'-'+ m +'-'+ y;
+                        return d +' '+ m +' '+ y;
                     }
                 },
                 {data:"hour_in",
@@ -91,6 +89,11 @@
                         return hr +':'+ mi +':'+ se;
                     }
                 },
+                {data:"latitude_in",
+                    render: function (data,type,row) {
+                        return 'Lat : '+row.latitude_in +' Lon : '+ row.longitude_in;
+                    }
+                },
                 {data:"hour_out",
                     render: function (data) {
                         var date = new Date(data);
@@ -98,11 +101,6 @@
                         var mi = date.getMinutes();
                         var se = date.getSeconds();
                         return hr +':'+ mi +':'+ se;
-                    }
-                },
-                {data:"latitude_in",
-                    render: function (data,type,row) {
-                        return 'Lat : '+row.latitude_in +' Lon : '+ row.longitude_in;
                     }
                 },
                 {data:"latitude_out",
@@ -123,105 +121,5 @@
                 cell.innerHTML = i+1;
             } );
         } ).draw();
-
-        $("div.group").html(
-            '<button id="add" class="btn btn-primary pull-up" style="margin-top: 5px">Add</button>&nbsp;'+
-            '<button id="edit" class="btn btn-info pull-up" style="margin-top: 5px">Edit</button>&nbsp;'+
-            '<button id="delete" class="btn btn-danger pull-up" style="margin-top: 5px">Delete</button>&nbsp;'
-        );
-
-        tblattend.on('click', 'tr', function() {
-            if ($(this).hasClass('selected')) {
-                $(this).removeClass('selected');
-            }
-            else{
-                tblattend.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-            }
-        });
-
-        $('#add').click(function(){
-            $('#modalheader').removeClass('bg-info').addClass('bg-primary white');
-            $('#modaldialog').addClass('modal-lg');
-            $('#modaltitle').addClass('white');
-            $('#modaltitle').html('Employee Entry');
-            $('#modalbody').load("<?php echo base_url("C_user/addnew");?>");
-            $('#modal').data('id', 0);
-            $('#modal').modal('show');
-        })
-
-        $('#edit').click(function(){
-            var rows = tblattend.rows('.selected').indexes();
-            if (rows.length < 1) {
-                Swal.fire("warning",'Please select a row',"warning");
-                return;
-            } 
-            var data = tblattend.rows(rows).data();
-            var id = data[0].userID;
-
-            var site_url = '<?php echo base_url("C_user/addnew/")?>';
-
-            $('#modalheader').removeClass('bg-primary').addClass('bg-info white');
-            $('#modaltitle').addClass('white');
-            $('#modaltitle').html('Menu Edit');
-            $('#modalbody').load(site_url);
-
-            $('#modal').data('id', id);
-            $('#modal').modal('show');
-        })
-
-
-        $('#delete').click(function(){
-            var rows = tblattend.rows('.selected').indexes();
-            if (rows.length < 1) {
-                Swal.fire("warning",'Please select a row',"warning");
-                return;
-            } 
-
-            var data = tblattend.rows(rows).data();
-            var id = data[0].userID;
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            })
-            .then((result) => {
-                if (result.value) {
-                    Delete(id);
-                }else{
-                    block(false,'.content-body');
-                }
-            })
-        })
-
-        function Delete(id) {
-           block(true,'.content-body');
-            $.ajax({
-                url : "<?php echo base_url('C_user/delete');?>",
-                type:"POST",
-                data: { id: id },
-                dataType:"json",
-                success:function(event, data){
-                    if (event.Error == false) {
-                        Swal.fire("success",event.Message,"success");
-                        block(false,'.content-body');
-                        tblattend.ajax.reload(null,true); 
-                    }
-                    else{
-                        Swal.fire("Information",'error Save : '+event.Message,"warning");
-                        block(false,'.content-body');
-                    }
-                },                    
-                error: function(jqXHR, textStatus, errorThrown){        
-                    Swal.fire("Information",textStatus+' Save : '+errorThrown,"warning");
-                    block(false,'.content-body');
-                }
-            });
-        }
     </script>
 <!-- js -->

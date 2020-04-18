@@ -9,9 +9,6 @@
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-wrapper-before" style="height: 150px !Important"></div>
-            <div class="content-header row">
-                <br><br>
-            </div>
             <div class="content-body">
                 <div class="row">
                     <div class="col-12">
