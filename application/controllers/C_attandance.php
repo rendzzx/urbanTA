@@ -114,35 +114,49 @@ class C_attandance extends Core_Controller {
 	    		redirect('C_attandance/index');
 	    	}
 	    	else {
-		        $date 		= date("d M Y");
+		        $sql = "SELECT distinct employee_id, name from employee(nolock)";        
+	            $dataEMP = $this->M_wsbangun->getData_by_query('IFCA',$sql);
+	            $combo = array();
+	            if(!empty($dataEMP)) {
+	                $combo[] = '<option value="">Select Employee</option>';
+	                foreach ($dataEMP as $key) {
+	                    $combo[] = '<option  value="'.$key->employee_id.'" >'.$key->employee_id.' - '.$key->name.'</option>';
+	                }
+	                $combo = implode("", $combo);
+	            }
 
-	    		$totaluser = $this->M_wsbangun->getData('IFCA', 'employee');
-	    		$totaluser_cnt = count($totaluser);
-
-	    		$reportDay = $this->M_wsbangun->getData('IFCA', 'v_attend_report_daily');
-	    		$reportDay_cnt = count($reportDay);
-
-	    		$notAttend = $totaluser_cnt - $reportDay_cnt;
-
-	    		// THIS MONTH
-		    		$sql = "SELECT * FROM v_report_attend_perday WHERE MONTH(date_attend) = MONTH('$date') AND YEAR(date_attend) = YEAR('$date') ";
-			        $reportmo = $this->M_wsbangun->getData_by_query('IFCA', $sql);
-			        $remo = array();
-			        foreach ($reportmo as $value) {
-			        	$remo[] = $value->user_attend;
-			        }
-		        // THIS MONTH
-
-	    		$content = array(
-	    			'totaluser' 	=> $totaluser_cnt,
-	    			'userAttend' 	=> $reportDay_cnt,
-	    			'notAttend' 	=> $notAttend,
-	    			'reportmo'		=> $remo
-	    		);
+	            $content = array(
+	                'cmbEMP'=>$combo
+	            );
 
 				$this->load_content_top_menu('attandance/report', $content);
 	    	}
 		}
+
+		public function getTableReport($id){
+	        $date 		= date("d M Y");
+	        $callback 	= array();
+
+	        $sql = "
+	        	SELECT employee_id, name, email, day, hour_in 
+	        	FROM v_attend_trx 
+	        	WHERE MONTH(day) = MONTH('$date') 
+	        	AND YEAR(day) = YEAR('$date') 
+	        	AND employee_id = '$id' 
+	        ";
+
+	        $res = $this->M_wsbangun->getData_by_query('IFCA', $sql);
+	        foreach ($res as $val) {
+	        	$callback[] = array(
+	        		'employee_id' 	=> $val->employee_id,
+	        		'name' 			=> $val->name,
+	        		'email' 		=> $val->email,
+	        		'day' 			=> date_format(date_create($val->day), "d F Y"),
+	        		'hour_in' 		=> date_format(date_create($val->hour_in), "H:i:s"),
+	        	);
+	        }
+	        echo json_encode($callback);
+	    }
 	// REPORT
 
 }

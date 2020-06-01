@@ -7,7 +7,18 @@
     <script type="text/javascript" src="<?=base_url('app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js')?>"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@9.10.10/dist/sweetalert2.min.js"></script>
     <script type="text/javascript" src="<?=base_url('app-assets/vendors/js/charts/chart.min.js')?>"></script>
-
+    
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.15/c3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/c3_renderers.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/d3_renderers.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/tips_data.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/gchart_renderers.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/export_renderers.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.min.css">
     <style>
         #card-totaluser{
             height: 10rem;
@@ -47,96 +58,18 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Employee</h4>
-                                <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
-                                <div class="heading-elements">
-                                    <ul class="list-inline mb-0">
-                                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card-content collapse show">
-                                <div class="card-body card-dashboard">
-                                    <!-- total employee -->
+                                <div class="card-title">
                                     <div class="row">
-
-                                        <div class="col-xl-4 col-lg-6 col-md-12">
-                                            <div class="card" id="card-totaluser">
-                                                <div class="card-content">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <h4 class="card-title">Total Employee</h4>
-                                                                <div id="totaluser" class="height-150 donutShadow">
-                                                                    <strong style="font-size: 30px;">
-                                                                        <?= $totaluser; ?>
-                                                                    </strong>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col text-right">
-                                                                <i class="la la-user" style="font-size: 130px;"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div class="col-6">
+                                            <select name="emp_id" id="emp_id" class="select2_demo_1 form-control">
+                                                <?=$cmbEMP;?>
+                                            </select>
                                         </div>
-
-                                        <div class="col-xl-4 col-lg-6 col-md-12">
-                                            <div class="card" id="card-userattend">
-                                                <div class="card-content">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <h4 class="card-title">Total employee attended</h4>
-                                                                <div id="userattend" class="height-150 donutShadow">
-                                                                    <strong style="font-size: 30px;">
-                                                                        <?= $userAttend; ?>
-                                                                    </strong>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col text-right">
-                                                                <i class="la la-user-plus" style="font-size: 130px;"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-4 col-lg-6 col-md-12">
-                                            <div class="card" id="card-notattend">
-                                                <div class="card-content">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <h4 class="card-title">Employee not attended</h4>
-                                                                <div id="usernotattend" class="height-150 donutShadow">
-                                                                    <strong style="font-size: 30px;">
-                                                                        <?= $notAttend; ?>
-                                                                    </strong>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col text-right">
-                                                                <i class="la la-user-times" style="font-size: 130px;"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div class="col-6">
+                                            <button id="btncsv" class="btn btn-primary" style="width: 80%" disabled>Download CSV</button>
                                         </div>
                                     </div>
-                                    <!-- total employee -->
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Employee Attend Today</h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
@@ -146,9 +79,9 @@
                                 </div>
                             </div>
                             <div class="card-content collapse show">
-                                <div class="card-body chartjs">
-                                    <div class="height-500">
-                                        <canvas id="attendperday"></canvas>
+                                <div class="card-body" style="min-height: 500px;">
+                                    <div id="attendperday">
+                                        <h1 align="center" id="messageNotEmp">Please Select Employee</h1>
                                     </div>
                                 </div>
                             </div>
@@ -162,69 +95,50 @@
 
 <!-- js -->
     <script type="text/javascript">
-        $(window).on("load", function(){
-            var ctx = $("#attendperday");
-            var chartOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend: {
-                    position: 'bottom',
-                },
-                hover: {
-                    mode: 'label'
-                },
-                scales: {
-                    xAxes: [{
-                        display: true,
-                        gridLines: {
-                            color: "#f3f3f3",
-                            drawTicks: false,
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Day Of Month'
-                        }
-                    }],
-                    yAxes: [{
-                        display: true,
-                        gridLines: {
-                            color: "#f3f3f3",
-                            drawTicks: false,
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'User Attended'
-                        }
-                    }]
-                },
-                title: {
-                    display: true,
-                    text: 'User Attend per Day'
+        $(document).ready(function () {
+            $('#emp_id').on('change', function (data) {
+                var emp_id = $('#emp_id').val();
+                if (emp_id == '' || emp_id == null || emp_id == 0) {
+                    $('.pvtUi').hide();
+                    $('#messageNotEmp').show();
+                    $('#btncsv').attr('disabled',true);
                 }
-            };
-            var chartData = {
-                labels: <?= json_encode(countDayOfMonth()); ?>,
-                datasets: [
-                    {
-                        label: "This Month",
-                        data: <?= json_encode($reportmo); ?>,
-                        fill: false,
-                        borderDash: [5, 5],
-                        borderColor: "#9C27B0",
-                        pointBorderColor: "#9C27B0",
-                        pointBackgroundColor: "#FFF",
-                        pointBorderWidth: 2,
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 4,
-                    }
-                ]
-            };
-            var config = {
-                type: 'line',
-                options : chartOptions,
-                data : chartData
-            };
-            var lineChart = new Chart(ctx, config);
+                else{
+                    $('#messageNotEmp').hide();
+                    $('#btncsv').attr('disabled',false);
+                    getPivot(emp_id);
+                }
+            })
+
+            $('#btncsv').on('click', function (data) {
+                var emp_id = $('#emp_id').val();
+                console.log(emp_id);
+                getCsv(emp_id);
+            })
         });
+
+        function getPivot(id){
+            var derivers = $.pivotUtilities.derivers;
+            $.getJSON("<?= base_url('C_attandance/getTableReport/')?>"+ id, function(data) {
+                $("#attendperday").pivotUI(data, {
+                    rows : ["day"],
+                    cols : ["employee_id", "name","email"],
+                    vals : ["hour_id"],
+                    aggregators: $.pivotUtilities.aggregators,
+                    rendererName : "Table",
+                    renderers : $.extend(
+                        $.pivotUtilities.renderers,
+                        $.pivotUtilities.plotly_renderers,
+                        $.pivotUtilities.c3_renderers,
+                        $.pivotUtilities.export_renderers
+                    ),
+                });
+            });
+        }
+
+        function getCsv(id) {
+            $.getJSON("<?= base_url('C_attandance/getTableReport/')?>"+ id, function(data) {
+            });
+        }
     </script>
 <!-- js -->
