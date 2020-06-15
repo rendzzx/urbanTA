@@ -219,16 +219,7 @@
                             </li>
                         </ul>
                         <ul class="nav navbar-nav float-right">         
-                            <li class="nav-item d-none d-md-block">
-                                <div class="row">  
-                                    <div style="line-height: 4;display: block;padding-right: 0px !important;" class="nav-link nav-link-label">
-                                        <img src="<?php echo $propict ?>" style="border-radius: 5px;width: 35px;height: 35px;object-fit: cover;" class="displayed">
-                                    </div>
-                                    <div id="div_project" class="nav-link nav-link-label" style="padding-top: 31px;padding-right: 15px;">
-                                        <?php echo $projectName ?>
-                                    </div>
-                                </div>
-                            </li>
+                            
                             <li class="dropdown dropdown-user nav-item">
                                 <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                                     <span class="avatar avatar-online">

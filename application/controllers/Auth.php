@@ -57,13 +57,12 @@ class Auth extends Core_Controller{
                     $datas = $this->M_wsbangun->getData_by_query('IFCA', $sql);
 
                     if($datas){
-                        if($COM == strtoupper($datas[0]->COM)){
+                        if($COM == $datas[0]->password){
                             $this->session->set_userdata('is_Staff_logged', true);
                             $this->session->set_userdata('Tsuname', $datas[0]->userID);
                             $this->session->set_userdata('Tsemail', $datas[0]->email);
                             $this->session->set_userdata('Tsname', $datas[0]->name);
                             $this->session->set_userdata('Tsusergroup', $datas[0]->Group_Cd);
-                            $this->session->set_userdata('Tsdebtor_acct', $datas[0]->debtor_acct);
                             $this->session->set_userdata('Tsdashboard', 'administrator/index/');
                             $this->session->unset_userdata('captchaWord');
                             $callback['Message']    = 'success';

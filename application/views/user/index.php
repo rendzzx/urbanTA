@@ -39,8 +39,6 @@
                                                 <th>name</th>
                                                 <th>Group</th>
                                                 <th>Handphone</th>
-                                                <th>Agent ID</th>
-                                                <th>Debtor ID</th>
                                                 <th>Address</th>
                                                 <th>Gender</th>
                                                 <th>Status</th>
@@ -84,8 +82,6 @@
                 {data:"name"},
                 {data:"Group_Cd"},
                 {data:"handphone"},
-                {data:"agent_cd"},
-                {data:"debtor_acct"},
                 {data:"address"},
                 {data:"gender"},
                 {data:"status_active",

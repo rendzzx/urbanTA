@@ -8,42 +8,42 @@ class Administrator extends Core_Controller{
     public function index(){
         $this->session->unset_userdata('urlmodule');
 
-        $entity = $this->session->userdata('Tsentity');
-        $project = $this->session->userdata('Tsproject');
-        $seqno = $this->input->post('seqno', true);
+        // $entity = $this->session->userdata('Tsentity');
+        // $project = $this->session->userdata('Tsproject');
+        // $seqno = $this->input->post('seqno', true);
         
-        $param = $this->uri->segment(3);
-        $paramDcd = base64_decode($param);
+        // $param = $this->uri->segment(3);
+        // $paramDcd = base64_decode($param);
 
-        if(empty($paramDcd)) {
-            $project_no = $this->session->userdata('Tsproject');
-            $projectName = $this->session->userdata('Tsprojectname') ;
-        }
-        else {
-            $b              = explode("-%-", $paramDcd);
-            $project_no     = $b[0];
-            $projectName    = $b[1];
+        // if(empty($paramDcd)) {
+        //     $project_no = $this->session->userdata('Tsproject');
+        //     $projectName = $this->session->userdata('Tsprojectname') ;
+        // }
+        // else {
+        //     $b              = explode("-%-", $paramDcd);
+        //     $project_no     = $b[0];
+        //     $projectName    = $b[1];
 
-            $Squery ="SELECT max(entity_cd) as entity_cd ,max(entity_name) as entity_name from v_entity_project where project_no ='$project_no' ";
-            $dd = $this->M_wsbangun->getData_by_query('IFCA', $Squery);
+        //     $Squery ="SELECT max(entity_cd) as entity_cd ,max(entity_name) as entity_name from v_entity_project where project_no ='$project_no' ";
+        //     $dd = $this->M_wsbangun->getData_by_query('IFCA', $Squery);
             
-            $entity         = $dd[0]->entity_cd;
-            $entity_name    = $dd[0]->entity_name;
+        //     $entity         = $dd[0]->entity_cd;
+        //     $entity_name    = $dd[0]->entity_name;
        
-            $position ='T';
+        //     $position ='T';
  
-            $this->session->set_userdata('TMenuPs',$position);
-            $this->session->set_userdata('Tsentityname',$entity_name);
-            $this->session->set_userdata('Tsentity', $entity);            
-            $this->session->set_userdata('Tsproject', $project_no);            
-            $this->session->set_userdata('Tsprojectname', $projectName);
-        }      
+        //     $this->session->set_userdata('TMenuPs',$position);
+        //     $this->session->set_userdata('Tsentityname',$entity_name);
+        //     $this->session->set_userdata('Tsentity', $entity);            
+        //     $this->session->set_userdata('Tsproject', $project_no);            
+        //     $this->session->set_userdata('Tsprojectname', $projectName);
+        // }      
         
-        $cons = $this->session->userdata('Tscons');
+        // $cons = $this->session->userdata('Tscons');
+        // $user_email = $this->session->userdata('Tsemail'); 
+        // $entity = $this->session->userdata('Tsentity');
+        // $project = $this->session->userdata('Tsproject');
         $user_id = $this->session->userdata('Tsname');
-        $user_email = $this->session->userdata('Tsemail'); 
-        $entity = $this->session->userdata('Tsentity');
-        $project = $this->session->userdata('Tsproject');
         $group_cd = $this->session->userdata('Tsusergroup');
 
         $where = array(
@@ -75,8 +75,8 @@ class Administrator extends Core_Controller{
             }
         }
         $content = array(
-            'projectName'=>$projectName,
-            'project_no'=>$project_no,
+            // 'projectName'=>$projectName,
+            // 'project_no'=>$project_no,
             'name'=>$user_id,
             'module' => $module
         );

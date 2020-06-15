@@ -175,7 +175,7 @@
                             success:function(event, data){
                                 if (event.Error == false) {
                                     if (event.Message == 'success') {
-                                        window.location.href = '<?= base_url("Dash"); ?>';
+                                        window.location.href = '<?= base_url("Administrator/index"); ?>';
                                     }
                                 }
                                 else{
@@ -192,7 +192,7 @@
                                 Swal.fire({
                                     title: "Error",
                                     animation: true,
-                                    type:"error",
+                                    icon:"error",
                                     text: textStatus+' Save : '+errorThrown,
                                     confirmButtonText: "OK"
                                 });
