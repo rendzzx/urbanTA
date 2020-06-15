@@ -101,8 +101,6 @@ class C_user extends Core_Controller {
 
                 $email = $this->input->post('email', true);
                 $group = $this->input->post('group', true);
-                // $agent = $this->input->post('agent', true);
-                // $debtor = $this->input->post('debtor', true);
 
                 $name = $this->input->post('name', true);
                 $address = $this->input->post('address', true);
@@ -127,7 +125,6 @@ class C_user extends Core_Controller {
                     'name'          => $name,
                     'Group_Cd'      => $group,
                     'password'      => $COM,
-                    'COM'           => $COM
                 );
 
                 $dataemp = array(
@@ -174,8 +171,18 @@ class C_user extends Core_Controller {
                     'base_salary'   => $base_salary,
                 );
                     
-                $where = array('userID' => $userid);
-                var_dump('update');die;
+                $whereusr = array('userID' => $userid);
+                $whereemp = array('employee_id' => $employeeid);
+
+                $updateuser = $this->M_wsbangun->updateData('IFCA', 'sysUser', $datauser, $whereusr);
+                $updateemp = $this->M_wsbangun->updateData('IFCA', 'employee', $dataemp, $whereemp);
+                if ($updateuser && $updateemp) {
+                    $callback['Message'] = "User Updated Successfully";
+                }
+                else{
+                    $callback['Error'] = true;
+                    $callback['Message'] = "User update failed";
+                }
             }
         } //tutup post
         else{

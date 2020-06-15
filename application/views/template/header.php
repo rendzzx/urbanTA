@@ -235,9 +235,9 @@
             
                     <li class="dropdown nav-item" data-menu="dropdown">
                         <a class=" nav-link" href="#" >
-                            <span>
+                            <h4>
                                 Welcome, <?php echo ucwords($this->session->userdata("Tsname"));?>
-                            </span>
+                            </h4>
                         </a>
                     </li>
                 </ul>
