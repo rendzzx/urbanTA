@@ -37,8 +37,6 @@ class Api extends Core_Controller{
                         'email'         => $email,
                         'name'          => $DatasysUser[0]->name,
                         'group_cd'      => $DatasysUser[0]->Group_Cd,
-                        'agent_cd'      => $DatasysUser[0]->agent_cd,
-                        'debtor_acct'   => $DatasysUser[0]->debtor_acct,
                         'employee_id'   => $DatasysUser[0]->employee_id,
                         'handphone'     => $DatasysUser[0]->handphone,
                         'nik'           => $DatasysUser[0]->nik,

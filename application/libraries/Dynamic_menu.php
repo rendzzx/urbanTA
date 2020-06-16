@@ -14,10 +14,13 @@ class Dynamic_menu {
     }
 
     function build_menu($active = null, $usergroup = null){      
-        $table = "select ROW_NUMBER() OVER (ORDER BY parent_seq, child_seq, v_sysMenuGroup.MenuID ASC) AS [row_number], ";
-        $table .= " * from v_sysMenuGroup";
-        $table .= " where GroupCd ='$usergroup' ";
-        $table .= " order by parent_seq, child_seq";
+        $table = "
+            SELECT ROW_NUMBER() OVER (ORDER BY parent_seq, child_seq, v_sysMenuGroup.MenuID ASC) AS [row_number], 
+            * FROM v_sysMenuGroup 
+            WHERE GroupCd ='$usergroup'
+            AND status = 1
+            ORDER BY parent_seq, child_seq
+        ";
 
         $menu = array();
         $query = $this->ci->db->query($table);
