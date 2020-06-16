@@ -32,13 +32,13 @@ class Auth extends Core_Controller{
         );
 
         if($_POST){
-            $email      = $this->security->xss_clean($this->input->post('email'));
+            $email      = $this->security->xss_clean($this->input->post('username'));
             $password   = $this->security->xss_clean(trim($this->input->post('password')));
             $COM        = strtoupper(md5(strtoupper(md5($email)). "P@ssw0rd" .strtoupper(md5($password))));
 
             $userCaptcha = $this->input->post('userCaptcha', TRUE);
 
-            $this->form_validation->set_rules('email', 'Email', 'required');
+            $this->form_validation->set_rules('username', 'Email', 'required');
             $this->form_validation->set_rules('password', 'Password', 'required');
             $this->form_validation->set_rules('userCaptcha', 'Captcha', 'required');
 
@@ -134,16 +134,8 @@ class Auth extends Core_Controller{
         $this->session->unset_userdata('Tsname');
         $this->session->unset_userdata('Tsemail');
         $this->session->unset_userdata('Tsuname');
-        $this->session->unset_userdata('Tsentity');
-        $this->session->unset_userdata('Tsproject');
-        $this->session->unset_userdata('TmpLot');
-        $this->session->unset_userdata('TmpBuss');
-        $this->session->unset_userdata('Tsentity');
-        $this->session->unset_userdata('Tsproject');
-        $this->session->unset_userdata('Tsentityname');
         $this->session->unset_userdata('Tsusergroup');
         $this->session->unset_userdata('TMenuPs');
-        $is_cloud = $this->session->userdata("FCloud");
         redirect('login');
     }
 }

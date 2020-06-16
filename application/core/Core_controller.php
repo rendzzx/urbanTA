@@ -13,20 +13,7 @@ class Core_controller extends CI_Controller{
 
     public function load_content($view = "", $content = null){
         $user_email = $this->session->userdata('Tsemail');
-        $entity = $this->session->userdata('Tsentity');
-        $project = $this->session->userdata('Tsproject');
-        $projectn = $this->session->userdata('Tsprojectname') ;
 
-        $projectnm = '';
-        $projectnm = ' <a class="nav-link" href="'.base_url().'dash/index" style="padding-top: 0px;padding-right: 0px;">'.$projectn.'</a>';
-
-        $content['projectName'] = '';
-        if(!empty($projectn)) {
-            $content['projectName'] = $projectnm;
-        }else{
-            $content['projectName'] = '';
-        }
-        
         $sqlpict = "SELECT * from sysuser where email='$user_email'";
         $pictuser = $this->M_wsbangun->getData_by_query('IFCA', $sqlpict);
 
@@ -35,7 +22,7 @@ class Core_controller extends CI_Controller{
             $content['pictuser'] = $pictuser[0]->pict;                   
         }
         else{
-            $content['pictuser'] = base_url('app-assets/images/images/white.png');
+            $content['pictuser'] = "https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100&ssl=1";
         }
 
         $this->load->view('template/header', $content);
@@ -46,12 +33,9 @@ class Core_controller extends CI_Controller{
     }
 
     public function load_content_top_menu($view = "", $content = null){
-        $projectNo = $this->session->userdata('Tsproject');
         $usergroup = $this->session->userdata('Tsusergroup');
-        $projectn = $this->session->userdata('Tsprojectname') ;
         $user_email = $this->session->userdata('Tsemail');
         
-        $content['projectName'] = '<a class="nav-link" href="'.base_url().'dash/index" style="padding-top: 0px;padding-right: 0px;">'.$projectn.'</a>';
 
         // picuser
             $sqlpict = "SELECT * from sysuser where email='$user_email'";
@@ -64,17 +48,6 @@ class Core_controller extends CI_Controller{
                 $content['pictuser'] = "https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100&ssl=1";
             }
 
-        // pic project
-            $prjpict = "SELECT picture_path FROM project where project_no='$projectNo'";
-            $pictproj = $this->M_wsbangun->getData_by_query('IFCA', $prjpict);
-            
-            $content['propict']='';
-            if ($pictproj) {
-                $content['propict'] = $pictproj[0]->picture_path;
-            }else{
-                $content['propict'] = "https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100&ssl=1";
-            }
-
         // segment
             $param1 = $this->uri->segment(1);
             $param2 = $this->uri->segment(2);
@@ -83,9 +56,9 @@ class Core_controller extends CI_Controller{
             }else{
                 $path = $param1.'/'.$param2;
             }
-            $content['path']=$path;
+            $content['path'] = $path;
 
-        $content['usergroup']=$usergroup;
+        $content['usergroup'] = $usergroup;
         
         $this->load->view('template/header2', $content);
         if (!empty($view)){
@@ -150,7 +123,6 @@ class Core_controller extends CI_Controller{
     
     public function auth_check(){
         $is_logged = $this->session->userdata("is_Staff_logged");
-        $is_cloud = $this->session->userdata("FCloud");
         $is_reset = $this->session->userdata("isReset");
         if($is_reset == '1' || (isset($is_reset) && $is_reset == true)){
           redirect('ResetPassword/reset');

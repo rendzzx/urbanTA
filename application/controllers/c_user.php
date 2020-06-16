@@ -12,14 +12,12 @@ class C_user extends Core_Controller {
 	}
 
 	public function getTable(){
-        $project = $this->session->userdata('Tsproject');        
 
         $sSearch = $this->input->post("sSearch",true);
         if(empty($sSearch)){
             $sSearch='';
         }
 
-        $entity = $this->session->userdata('Tsentity');
         $this->load->library('Datatables');
         $DB2 = $this->load->database('IFCA', TRUE);
         $table = 'v_employee_user';

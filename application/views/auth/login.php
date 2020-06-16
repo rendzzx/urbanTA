@@ -73,7 +73,7 @@
                         </div>
                         <form class="form-horizontal" id="frmEditor" action="<?php echo base_url(); ?>Auth/login" method="post" width="40%">
                             <fieldset class="form-group position-relative has-icon-left">
-                                <input type="email" class="form-control round"  name="email" id="email" placeholder="Your Email" required>
+                                <input type="email" class="form-control round"  name="username" id="username" placeholder="Your Email" required>
                                 <div class="form-control-position">
                                     <i class="ft-user"></i>
                                 </div>
@@ -119,7 +119,7 @@
                     password: { 
                         required: true
                     },        
-                    email:{
+                    username:{
                         required: true,
                         email:true
                     },
@@ -128,8 +128,8 @@
                     }
                 },
                 messages: {
-                    email: {
-                        required: "Email is required",
+                    username: {
+                        required: "Username is required",
                         email: "This must be an email"
                     },
                     password: {

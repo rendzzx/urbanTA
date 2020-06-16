@@ -13,8 +13,6 @@ class C_group extends Core_Controller{
     }
 
     public function getTable(){
-        $project = $this->session->userdata('Tsproject');        
-
         $sSearch = $this->input->post("sSearch",true);
         if(empty($sSearch)){
             $sSearch='';

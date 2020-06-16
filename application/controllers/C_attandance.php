@@ -17,10 +17,20 @@ class C_attandance extends Core_Controller {
 	    	}
 	    	else {
 	    		$totaluser = $this->M_wsbangun->getData('IFCA', 'employee');
-	    		$totaluser_cnt = count($totaluser);
-
+	    		if (count($totaluser)>0) {
+		    		$totaluser_cnt = count($totaluser);
+	    		}
+	    		else{
+	    			$totaluser_cnt = 0;
+	    		}
+	    		
 	    		$reportDay = $this->M_wsbangun->getData('IFCA', 'v_attend_report_daily');
-	    		$reportDay_cnt = count($reportDay);
+	    		if (count($reportDay)>0) {
+		    		$reportDay_cnt = count($totaluser);
+	    		}
+	    		else{
+	    			$reportDay_cnt = 0;
+	    		}
 
 	    		$notAttend = $totaluser_cnt - $reportDay_cnt;
 
@@ -54,7 +64,6 @@ class C_attandance extends Core_Controller {
 		}
 
 		public function getTableAttend(){
-	        $project 	= $this->session->userdata('Tsproject');        
 	        $group 		= $this->session->userdata('Tsusergroup');
 	        $email 		= $this->session->userdata('Tsemail');
 	        $date 		= date("d M Y");
@@ -83,7 +92,6 @@ class C_attandance extends Core_Controller {
 		}
 
 		public function getTableEvent(){
-	        $project 	= $this->session->userdata('Tsproject');        
 	        $group 		= $this->session->userdata('Tsusergroup');
 	        $email 		= $this->session->userdata('Tsemail');
 	        $date 		= date("d M Y");

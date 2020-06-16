@@ -159,69 +159,6 @@
 
 <!-- content -->
     <body class="horizontal-layout horizontal-menu 2-columns menu-expanded" data-open="hover" data-menu="horizontal-menu" data-color="bg-gradient-x-purple-blue" data-col="2-columns" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="" oncontextmenu="return false;">
-        <!-- <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow navbar-static-top navbar-light navbar-brand-center">
-            <div class="navbar-header">
-                <ul class="nav navbar-nav flex-row">
-                    <li class="nav-item mobile-menu d-md-none mr-auto">
-                        <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
-                            <i class="ft-menu font-large-1"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item d-md-none">
-                        <a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile">
-                            <i class="la la-ellipsis-v"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="navbar-wrapper">
-                <div class="navbar-container content">
-                    <div class="collapse navbar-collapse" id="navbar-mobile">
-                        <ul class="nav navbar-nav mr-auto float-left">
-                            <li></li>
-                        </ul>
-                        <ul class="nav navbar-nav float-right">
-                            <li class="nav-item d-none d-md-block">
-                                <div class="row">
-                                    <div id="div_project" class="nav-link nav-link-label" style="padding-top: 31px;padding-right: 15px;">
-                                        <?php echo $projectName ?>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="dropdown dropdown-user nav-item">
-                                <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                                    <span class="avatar avatar-online">
-                                        <img src="<?php echo $pictuser ?>" alt="avatar">
-                                    </span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <div class="arrow_box_right">
-                                        <a class="dropdown-item" href="#">
-                                            <span class="avatar avatar-online">
-                                                <img src="<?php echo $pictuser ?>" alt="avatar">
-                                                <span class="user-name text-bold-700 ml-1">
-                                                    <?php echo ucwords($this->session->userdata("Tsname"));?>
-                                                </span>
-                                            </span>
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" onclick="profile()" color="#000000">
-                                            <i class="ft-user"></i>
-                                            Edit Profile
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="<?php echo base_url("logout")?>">
-                                            <i class="ft-power"></i>
-                                            Logout
-                                        </a>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </nav> -->
 
         <div class="header-navbar navbar-expand-sm navbar navbar-horizontal navbar-fixed navbar-dark navbar-without-dd-arrow navbar-shadow" role="navigation" data-menu="menu-wrapper">
             <div class="navbar-container main-menu-content" data-menu="menu-container">

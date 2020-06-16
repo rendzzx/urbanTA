@@ -6,7 +6,6 @@ class C_Module extends Core_Controller{
     }
     // ========================================  MODULE
         public function index(){
-            $entity = $this->session->userdata('Tsentity');
             $name = $this->session->userdata('Tsuname');
             $admin = $this->session->userdata('Tsysadmin');
 
@@ -14,14 +13,12 @@ class C_Module extends Core_Controller{
         }
 
         public function getTable(){
-            $project = $this->session->userdata('Tsproject');        
 
             $sSearch = $this->input->post("sSearch",true);
             if(empty($sSearch)){
                 $sSearch='';
             }
 
-            $entity = $this->session->userdata('Tsentity');
             $this->load->library('Datatables');
             $DB2 = $this->load->database('IFCA', TRUE);
             $table = 'sysmodule';
@@ -135,7 +132,6 @@ class C_Module extends Core_Controller{
 
     // ========================================  ASSIGN MODULE
         public function assign(){
-            $entity = $this->session->userdata('Tsentity');
             $name = $this->session->userdata('Tsuname');
             $admin = $this->session->userdata('Tsysadmin');
 
@@ -143,14 +139,12 @@ class C_Module extends Core_Controller{
         }
 
         public function getTableGroup(){
-            $project = $this->session->userdata('Tsproject');        
 
             $sSearch = $this->input->post("sSearch",true);
             if(empty($sSearch)){
                 $sSearch='';
             }
 
-            $entity = $this->session->userdata('Tsentity');
             $this->load->library('Datatables');
             $DB2 = $this->load->database('IFCA', TRUE);
             $table = 'sysGroup';
@@ -163,7 +157,6 @@ class C_Module extends Core_Controller{
         }
 
         public function assignuser(){
-            $entity = $this->session->userdata('Tsentity');
             $name = $this->session->userdata('Tsuname');
             $admin = $this->session->userdata('Tsysadmin');
             $sql = "SELECT distinct rowID,module_cd,module_descs,OrderSeq FROM sysModule (nolock) order by OrderSeq asc";
@@ -190,8 +183,6 @@ class C_Module extends Core_Controller{
                 'Error'  => false
             );
 
-            $entity     = $this->session->userdata('Tsentity');
-            $project    = $this->session->userdata('Tsproject');
             $cons       = $this->session->userdata('Tscons');
 
             if($_POST){
